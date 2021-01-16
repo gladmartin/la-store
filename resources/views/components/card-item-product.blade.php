@@ -9,10 +9,10 @@
                     @if ($item->diskon > 0)
                     <div class="diskon">
                         <span class="badge badge-danger">{{ $item->diskon }}%</span>
-                        <span class="harga-dasar">{{ $item->hargaRupiah($item->harga) }}</span>
+                        <span class="harga-dasar">{{ rupiah($item->harga) }}</span>
                     </div>
                     @endif
-                    <div class="harga-akhir mt-2">{{ $item->harga_akhir }}</div>
+                    <div class="harga-akhir mt-2">{{ rupiah($item->harga_akhir) }}</div>
                 </div>
             </div>
         </div>

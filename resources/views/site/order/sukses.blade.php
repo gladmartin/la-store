@@ -53,7 +53,7 @@
                                         (Qty. {{ $order->kuantitas }})
                                     </div>
                                 </td>
-                                <td>Rp {{ number_format($order->bayar, 0, ',', '.') }}</td>
+                                <td>Rp {{ rupiah($order->bayar) }}</td>
                             </tr>
                             <tr align="left">
                                 <td>
@@ -64,11 +64,11 @@
                                         {{ $order->delivery->service }})
                                     </div>
                                 </td>
-                                <td>Rp {{ number_format($order->delivery->ongkos_kirim, 0, ',', '.') }}</td>
+                                <td>Rp {{ rupiah($order->delivery->ongkos_kirim) }}</td>
                             </tr>
                             <tr align="left" class="bg-muda">
                                 <th>TOTAL</th>
-                                <th>Rp {{ number_format($order->delivery->ongkos_kirim + $order->bayar, 0, ',', '.') }}</th>
+                                <th>Rp {{ rupiah($order->delivery->ongkos_kirim + $order->bayar) }}</th>
                             </tr>
                         </table>
                     </div>
@@ -83,7 +83,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="bg-muda">
-                            <h2 class="h4 mb-0 p-2 text-center font-weight-bold text-uppercase">TOTAL : Rp {{ number_format($order->delivery->ongkos_kirim + $order->bayar, 0, ',', '.') }}</h2>
+                            <h2 class="h4 mb-0 p-2 text-center font-weight-bold text-uppercase">TOTAL : Rp {{ rupiah($order->delivery->ongkos_kirim + $order->bayar) }}</h2>
                         </div>
                     </div>
                 </div>

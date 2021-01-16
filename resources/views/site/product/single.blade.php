@@ -54,10 +54,10 @@
                                 @if ($product->diskon > 0)
                                 <div class="diskon">
                                     <span class="badge badge-danger">{{ $product->diskon }}%</span>
-                                    <span class="harga-dasar">{{ $product->hargaRupiah($product->harga) }}</span>
+                                    <span class="harga-dasar">{{ rupiah($product->harga) }}</span>
                                 </div>
                                 @endif
-                                <div class="harga-akhir mt-2">{{ $product->hargaRupiah($product->harga_akhir) }}</div>
+                                <div class="harga-akhir mt-2">{{ rupiah($product->harga_akhir) }}</div>
                                 <hr>
                                 <table class="table table-borderless table-sm">
                                     <tr>
@@ -230,9 +230,9 @@
                             <td>Harga</td>
                             <td class="text-right">
                                 {{-- @if ($product->diskon > 0)
-                                <span class="harga-dasar">{{ $product->hargaRupiah($product->harga) }}</span>
+                                <span class="harga-dasar">{{ rupiah($product->harga) }}</span>
                                 @endif --}}
-                                <span class="harga-final">{{ $product->hargaRupiah($product->harga_akhir) }}</span>
+                                <span class="harga-final">{{ rupiah($product->harga_akhir) }}</span>
                             </td>
                         </tr>
                         <tr>
@@ -242,7 +242,7 @@
                         <tr>
                             <th><b>TOTAL</b></th>
                             <th class="text-right">
-                                <span class="biaya-total">{{ $product->hargaRupiah($product->harga_akhir) }}</span>
+                                <span class="biaya-total">{{ rupiah($product->harga_akhir) }}</span>
                             </th>
                         </tr>
 

@@ -25,11 +25,11 @@
 .my-navbar-style {
     background-color: #005C97 !important;
     /* opacity: .5; */
-    box-shadow: 0 1rem 3rem rgba(0,0,0,.175) !important;
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175) !important;
 
 }
 
-.main-content{
+.main-content {
     min-height: 100%;
     padding-top: 200px;
 }
@@ -53,7 +53,7 @@
     width: 100%;
 }
 
-.input-search{
+.input-search {
     width: 100%;
     border: initial !important;
 
@@ -65,21 +65,20 @@
 }
 
 /* remove bootstrap border */
-textarea:hover, 
-input:hover, 
-textarea:active, 
-input:active, 
-textarea:focus, 
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
 input:focus,
 button:focus,
 button:active,
 button:hover,
 label:focus,
 .btn:active,
-.btn.active
-{
-    outline:0px !important;
-    -webkit-appearance:none;
+.btn.active {
+    outline: 0px !important;
+    -webkit-appearance: none;
     box-shadow: none !important;
 }
 
@@ -128,7 +127,7 @@ label:focus,
     bottom: 0;
     height: 60px;
     width: 100%;
-    
+
     display: flex !important;
     justify-content: space-evenly;
     align-items: center;
@@ -146,7 +145,7 @@ label:focus,
     text-align: center;
 }
 
-.item-bar:hover{
+.item-bar:hover {
     color: black;
     text-decoration: none;
 }
@@ -156,21 +155,31 @@ label:focus,
 @media (max-width: 992px) {
     h1 {
         font-size: 20px !important;
-    }  
+    }
+
     h2 {
         font-size: 18px !important;
-    }  
+    }
+
     h3 {
         font-size: 16px !important;
-    }    
-    html, body {
+    }
+
+    html,
+    body {
         font-size: 12px !important;
     }
 
     .my-navbar .navbar-brand {
         font-size: 22px !important;
     }
-    
+
 
 }
 
+
+.btn-primary {
+    background-color: var(--main-color) !important;
+    outline: none !important;
+    border: none !important;
+}

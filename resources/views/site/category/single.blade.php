@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', $category->title)
+@section('title', 'Menampilkan hasil produk dengan kategori ' . $category->name)
 
 @section('content')
 <div class="container mt-4">
     <nav class="la-breadcrumb" aria-label="breadcrumb">
-        <ul class="la-breadcrumb-list list-inline center-mobile">
+        <ul class="la-breadcrumb-list list-inline center-mobiles">
             <li class="la-breadcrumb-item list-inline-item">
                 <a href="{{ url('/') }}">Beranda</a>
             </li>
@@ -21,6 +21,17 @@
             </li>
         </ul>
     </nav>
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 px-xs-0">
+            <div class="shadow-sm bg-white p-4 rounded">
+                <b>Menampilkan {{ $category->name }}</b>
+                <hr>
+                <div class="row">
+                    @each('components.card-item-product', $category->products()->get(), 'item', 'components.card-product-empty')
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 @endsection
 

@@ -29,6 +29,14 @@
      .hidden-xs {
          display: none !important;
      }
+
+     .wa-float {
+        /* width: 55px; */
+        /* height: 55px; */
+        bottom: 70px;
+        right: 20px;
+        /* font-size: 28px; */
+     }
  }
 
 
@@ -53,4 +61,8 @@
      /* padding: 8px; */
     font-weight: bold;
     /* color: black; */
+ }
+
+ .nav-bottom-item.active {
+     color: var(--main-color);
  }

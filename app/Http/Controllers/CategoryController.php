@@ -11,6 +11,7 @@ class CategoryController extends Controller
     {
         $category = Category::where('slug', $slugCategory)->findOrFail($categoryId);
         
+        
         return view('site.category.single', compact('category'));
     }
 }

@@ -4,14 +4,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="theme-color" content="rgb(255, 45, 32)">
+    <meta name="msapplication-navbutton-color" content="rgb(255, 45, 32)">
+    <meta name="apple-mobile-web-app-status-bar-style" content="rgb(255, 45, 32)">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
-
-
-
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -21,54 +21,9 @@
     <link href="{{ asset('css/reset-bootstrap.css?i=' . time()) }}) }}" rel="stylesheet">
     <link href="{{ asset('css/main.css?i=' . time()) }}" rel="stylesheet">
     <link href="{{ asset('css/main-mobile.css?i=' . time()) }}" rel="stylesheet">
-    <!-- Custom fonts for this template-->
-    <link href="{{ asset('') }}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
-    <style>
-        .top-bar-header-menu {
-            background: #F7F7F7;
-            color: #5e5e5e !important;
-            font-weight: bold;
-        }
-
-        .main-footer {
-            /* background: #F7F7F7; */
-            background: white;
-            color: #5e5e5e;
-            padding-top: 20px;
-            padding-bottom: 20px;
-        }
-
-        .end-footer {
-            /* background: #eceaea; */
-            font-weight: 300;
-            font-size: 11px;
-            padding: 10px;
-        }
-
-        .link-footer a {
-            text-decoration: none;
-            color: #b9b8b8;
-        }
-
-        a {
-            text-decoration: none !important;
-            color: #a5a4a4;
-        }
-
-        a:hover {
-            color: rgb(230, 81, 11);
-        }
-
-        .category__box img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-        }
-
-    </style>
+    <script src="https://kit.fontawesome.com/a6c2ef0f76.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+<link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
     @stack('css')
 </head>
 
@@ -85,10 +40,11 @@
             </div>
         </div> --}}
         {{-- end top bar --}}
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm d-none d-sm-block">
+        <nav class="navbar navbar-expand-md navbar-dark bg-primary shadow-sm d-none d-sm-block">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    {{-- {{ config('app.name', 'Laravel') }} --}}
+                <img src="{{ asset('img/logo-store.png') }}" width="100px">
                 </a>
                 <button class="navbar-toggler hidden-xs" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -101,10 +57,10 @@
                     <ul class="navbar-nav mr-auto">
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url('shop') }}">{{ __('Belanja') }}</a>
+                            <a class="nav-link text-white" href="{{ url('shop') }}">{{ __('Belanja') }}</a>
                         </li>
                         <li class="nav-item dropdown d-none">
-                            <a id="kategoriDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                            <a id="kategoriDropdown" class="nav-link text-white dropdown-toggle" href="#" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                 {{ __('Kategori') }}
                             </a>
@@ -114,11 +70,11 @@
                             </div>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link"
+                            <a class="nav-link text-white"
                                 href="{{ route('order.konfirmasi') }}">{{ __('Konfirmasi Pembayaran') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('order.lacak') }}">{{ __('Lacak Pesanan') }}</a>
+                            <a class="nav-link text-white" href="{{ route('order.lacak') }}">{{ __('Lacak Pesanan') }}</a>
                         </li>
 
                         <!-- Authentication Links -->
@@ -160,11 +116,12 @@
             </div>
         </nav>
         {{-- nav mobile --}}
-        <nav class="bg-white shadow-sm d-block d-sm-none py-2">
+        <nav class="bg-white shadow-sm d-block d-sm-none py-2 bg-primary">
             <div class="container">
                 <div class="text-center">
-                    <a class="navbar-brand font-weight-bold text-center" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                    <a class="navbar-brand text-white font-weight-bold text-center" href="{{ url('/') }}">
+                        {{-- {{ config('app.name', 'Laravel') }} --}}
+                    <img src="{{ asset('img/logo-store.png') }}" alt="LaStore" width="130px">
                     </a>
                 </div>
                 <form method="get" class="form-search" action="/shop">
@@ -221,27 +178,33 @@
         </footer>
         <div class="pt-xs-10"></div>
         {{-- button nav mobile --}}
-        <div class="d-block d-sm-none">
+        <div class="d-block d-sm-none nav-bottom-warapper">
 
             <nav class="nav-bottom d-flex justify-content-around shadow-lg">
-                <a href="{{ url('/') }}" class="text-center nav-bottom-item">
+                <a href="{{ url('/') }}" class="text-center nav-bottom-item {{ isMenuActive('site.home') }}">
                     <div><i class="fa fa-home"></i></div>
-                    <div class="nav-bottom-text">Beranda</div>
+                    <div class="nav-bottom-text max-line-1">Beranda</div>
                 </a>
-                <a href="{{ url('/shop') }}" class="text-center nav-bottom-item">
+                <a href="{{ url('/shop') }}" class="text-center nav-bottom-item {{ isMenuActive('shop.index') }}">
                     <div><i class="fa fa-shopping-bag"></i></div>
-                    <div class="nav-bottom-text">Belanja</div>
+                    <div class="nav-bottom-text max-line-1">Belanja</div>
                 </a>
-                <a href="{{route('order.konfirmasi')}}" class="text-center nav-bottom-item">
+                <a href="{{route('order.konfirmasi')}}" class="text-center nav-bottom-item {{ isMenuActive('order.konfirmasi') }}">
                     <div><i class="fa fa-money-bill"></i></div>
-                    <div class="nav-bottom-text">Konfirmasi bayar</div>
+                    <div class="nav-bottom-text max-line-1">Konfirmasi bayar</div>
                 </a>
-                <a href="{{route('order.lacak')}}" class="text-center nav-bottom-item">
+                <a href="{{route('order.lacak')}}" class="text-center nav-bottom-item {{ isMenuActive('order.lacak') }}">
                     <div><i class="fa fa-box"></i></div>
-                    <div class="nav-bottom-text">Lacak pesanan</div>
+                    <div class="nav-bottom-text max-line-1">Lacak pesanan</div>
                 </a>
             </nav>
         </div>
+
+        {{-- Wa floating button --}}
+        <a href="https://api.whatsapp.com/send?phone=6289530757365&text=Halo" class="wa-float" target="_blank" title="Tanya ke CS kami!">
+            <i class="fa fa-whatsapp my-float"></i>
+        </a>
+
     </div>
 
     <!-- Scripts -->
@@ -252,7 +215,20 @@
         const BASE_URL = '{{ url("/") }}';
         const BASE_URL_API = '{{ url("api") }}';
         const CSRF_TOKEN = '{{ csrf_token() }}';
+        const htmlNavBottom = $('.nav-bottom-warapper').html();
+        $(document).on('focus', 'textarea, input', function(e){
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ){
+                // alert('taik');
+                $('.nav-bottom-warapper').html('')
+            }
+        });
 
+        $(document).on('blur', 'textarea, input', function(e){
+            if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ){
+                // alert('taik');
+                $('.nav-bottom-warapper').html(htmlNavBottom)
+            }
+        });
     </script>
     @stack('js')
 

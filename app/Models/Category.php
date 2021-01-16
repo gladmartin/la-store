@@ -33,4 +33,9 @@ class Category extends Model
 
         return $this->listCategory;
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }
