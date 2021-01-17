@@ -29,7 +29,7 @@ class ProductStoreRequest extends FormRequest
             'stok' => ['required', 'numeric'],
             'berat' => ['required', 'numeric'],
             'kondisi' => ['required'],
-            'thumbnail' => ['nullable'],
+            'thumbnail' => ['required'],
             'galeri' => ['nullable'],
             'deskripsi' => ['required'],
         ];

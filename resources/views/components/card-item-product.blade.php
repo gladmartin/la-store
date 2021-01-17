@@ -1,8 +1,8 @@
-<div class="col-lg-3 col-6">
+<div class="col-lg-3 col-6 mb-5">
     <a href="{{ route('product.single', [$item->slug, $item->id]) }}">
         <div class="card__product shadow-sm">
             <img src="{{ $item->image }}" alt="">
-            <div class="p-3 border">
+            <div class="p-3">
                 <a href="{{ route('product.single', [$item->slug, $item->id]) }}"
                     class="card__product__title">{{ $item->title }}</a>
                 <div>

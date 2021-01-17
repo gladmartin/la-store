@@ -209,6 +209,9 @@
 
     <script>
         const CSRF_TOKEN = '{{ csrf_token() }}';
+        const BASE_URL = '{{ url("/") }}';
+        const BASE_URL_API = '{{ url("api") }}';
+        const BASE_URL_ADMIN = '{{ url("/app-panel") }}';
         $(document).ready(function() {
             $('.datatable').DataTable();
         });

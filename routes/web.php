@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataTableController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Admin\ScrapeMarketPlaceController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
@@ -45,6 +46,10 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
         Route::get('/product',[DataTableController::class, 'products'])->name('dt.product');
     });
     Route::resource('product', AdminProductController::class);
+    
+    // scrape marketplace
+    Route::get('/scrape-mp/single', [ScrapeMarketPlaceController::class, 'single'])->name('scrape.mp');
+
 });
 
 // test routes

@@ -42,7 +42,7 @@ class ProductController extends Controller
      */
     public function store(ProductStoreRequest $request)
     {
-        $thumbnailUploaded = null;
+        $thumbnailUploaded = $request->thumbnail;
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail');
             $thumbnailUploaded = Storage::put('public/product', $thumbnail);
@@ -62,8 +62,10 @@ class ProductController extends Controller
         ]);
         $variants = null;
         foreach ($request->varian as $key => $value) {
-            $variants[$key] = $value;
-            $variants[$key]['product_id'] = $product->id;
+            if ($value['key'] || $value['value'] || $value['stok']) {
+                $variants[$key] = $value;
+                $variants[$key]['product_id'] = $product->id;
+            }
         }
 
         if ($variants) {

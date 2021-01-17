@@ -90,9 +90,7 @@
                         <div class="col-12">
                             <h5>Deskripsi</h5>
                             <hr>
-                            <div class="deskripsi">
-                                {!! $product->deskripsi !!}
-                            </div>
+                            <div class="deskripsi">{!! $product->deskripsi !!}</div>
                         </div>
                     </div>
                 </div>

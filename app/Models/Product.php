@@ -48,7 +48,7 @@ class Product extends Model
     {
         $collection = collect();
         $variants = $this->variants;
-        if (!$variants || empty($variants)) return $collection;
+        if (!$variants || $variants->isEmpty()) return $collection;
 
         $variasi = $variants->unique('key');
         foreach ($variasi as $key => $item) {
