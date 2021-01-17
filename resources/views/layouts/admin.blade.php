@@ -5,35 +5,20 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="robots" content="noindex">
 
-    <title>{{ config('app.name') }} @yield('title')</title>
+    <title>{{ config('app.name') }} | @yield('title')</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{{ asset('') }}/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="{{ asset('/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <link rel="shortcut icon" href="{{ asset('/favicon.png') }}" type="image/x-icon">
 
     <!-- Custom styles for this template-->
-    <link href="{{ asset('') }}/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="{{ asset('/css/sb-admin-2.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
     @stack('css')
-    <style>
-        a {
-            text-decoration: none !important;
-        }
-
-        .drive__title {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            /* number of lines to show */
-            -webkit-box-orient: vertical;
-        }
-
-    </style>
 
 </head>
 
@@ -46,9 +31,9 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('') }}">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}" target="blank">
                 <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-folder"></i>
+                    <i class="fas fa-store"></i>
                 </div>
                 <div class="sidebar-brand-text mx-3">{{ config('app.name') }}</div>
             </a>
@@ -57,31 +42,42 @@
             <hr class="sidebar-divider my-0">
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('home') }}">
+                <a class="nav-link" href="{{ route('dashboard') }}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('drive.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Drive Local</span></a>
+                <a class="nav-link" href="{{ route('product.index') }}">
+                    <i class="fas fa-fw fa-store"></i>
+                    <span>Produk</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('order.index') }}">
+                    <i class="fas fa-fw fa-shopping-bag"></i>
+                    <span>Order</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('external-storage.index') }}">
-                    <i class="fas fa-fw fa-database"></i>
-                    <span>Upload External Storage</span></a>
+                <a class="nav-link" href="{{ url('order.index') }}">
+                    <i class="fas fa-fw fa-box"></i>
+                    <span>Delivery</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('account.index') }}">
+                <a class="nav-link" href="{{ url('account.index') }}">
+                    <i class="fas fa-fw fa-cog"></i>
+                    <span>Pengaturan web</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url('account.index') }}">
                     <i class="fas fa-fw fa-user"></i>
-                    <span>Account</span></a>
+                    <span>Akun anda</span></a>
             </li>
 
             <!-- Divider -->
-            <hr class="sidebar-divider d-none d-md-block">
+            {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">
@@ -199,17 +195,23 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="{{ asset('') }}/vendor/jquery/jquery.min.js"></script>
-    <script src="{{ asset('') }}/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('/vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="{{ asset('') }}/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="{{ asset('/vendor/jquery-easing/jquery.easing.min.js') }}"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="{{ asset('') }}/js/sb-admin-2.min.js"></script>
+    <script src="{{ asset('/js/sb-admin-2.min.js') }}"></script>
+
+    <script src="{{ asset('/vendor/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
     <script>
-        const CSRF_TOKEN = '{{ csrf_token() }}'
+        const CSRF_TOKEN = '{{ csrf_token() }}';
+        $(document).ready(function() {
+            $('.datatable').DataTable();
+        });
     </script>
 
     @stack('js')

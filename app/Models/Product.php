@@ -20,11 +20,11 @@ class Product extends Model
         $query->orderBy('terjual', 'desc');
     }
 
-    public function getHargaAkhirAttribute($tes = '')
+    public function getHargaAkhirAttribute()
     {
         $diskon = floatval($this->diskon);
         $hargaDasar = $this->harga;
-        if ($diskon === self::NO_DISCOUNT)  return $this->hargaRupiah($hargaDasar);
+        if ($diskon === self::NO_DISCOUNT)  return $hargaDasar;
         $hargaDiskon = $hargaDasar - (($hargaDasar * $diskon) / 100);
         return $hargaDiskon;
     }
