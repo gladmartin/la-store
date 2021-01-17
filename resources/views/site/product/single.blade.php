@@ -258,6 +258,12 @@
         </div>
     </form>
 </div>
+
+ {{-- Wa floating button --}}
+<a href="https://api.whatsapp.com/send?phone=6289530757365&text=Hai mau tanya tentang {{ $product->title }} ({{ url()->current() }})" class="wa-float" target="_blank" title="Tanya ke CS kami!">
+    <i class="fa fa-whatsapp my-float"></i>
+</a>
+
 @endsection
 
 @push('js')
