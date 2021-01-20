@@ -33,6 +33,10 @@ class ScrapeMarketPlace {
         if ($host == 'shopee.co.id') {
             $result = new Shopee($url);
         }
+
+        if ($host == 'tokopedia.com' || $host == 'www.tokopedia.com') {
+            $result = new Tokopedia($url);
+        }   
         
         if (!$result) throw new MarketPlaceException('Marketplace tidak di support!');
        

@@ -37,6 +37,10 @@
                 <input name="url_mp" type="url" id="url" placeholder="Masukkan url produk atau toko"
                     class="form-control">
             </div>
+            <div class="form-group">
+                <input type="checkbox" name="is_toko" id="is-toko"> 
+                <label for="is-toko">Url toko?</label>
+            </div>
             <button type="submit" class="btn btn-primary btn-sm shadow btn-mulai">
                 <span class="icon-btn">
                     <i class="fa fa-plus"></i>
@@ -217,9 +221,12 @@
 
     function checkIsMultipleProduct() {
         if (!parseUrl) return;
+        let isUrlToko = $('#is-toko').is(":checked");
+        return isUrlToko;
         if (parseUrl.host == 'shopee.co.id') {
             return parseUrl.href.includes('https://shopee.co.id/shop') ? true : false;
         }
+        
     }
 
     async function fetchMultipleProduct() {

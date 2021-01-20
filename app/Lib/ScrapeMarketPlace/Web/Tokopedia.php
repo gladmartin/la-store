@@ -16,6 +16,9 @@ class Tokopedia
 
     public function __construct($url)
     {
+        if(substr($url, -1) == '/') {
+            $url = substr($url, 0, -1);
+        }
         $this->url = $url;
         $this->parseUrl = parse_url($url);
         $this->headersTokped = [
@@ -40,10 +43,14 @@ class Tokopedia
         if ($this->itemId == '') throw new TokopediaException('Produk slug tidak ditemukan');
         $body = $this->getGqlSingleProduct();
         $request = Request::post(config('lastore.proxy_shared_hoting'), [], $body);
+
         if ($request->failed()) throw new TokopediaException("Gagal mengambil info produk, response body " . $request->body());
+        
         $result = json_decode($request->body());
+        
         if (!$result->data) throw new TokopediaException('Produk tidak ditemukan, response body ' . $request->body());
 
+        // return $result;
         $result = $result->data->getPDPInfo;
 
         $categories = [];
@@ -74,8 +81,8 @@ class Tokopedia
             'categories' => $categories,
             'thumbnail' => $images[0],
             'images' => $images,
-            'description' => $result->basic->description,
-            'stock' => $result->stock ?? 1,
+            'description' => $result->basic->description ?? 'N/A',
+            'stock' => $result->stock->value ?? 1,
             'weight' => $result->basic->weight ?? 100,
             'price' => $result->basic->price,
             'variants' => $variants,
@@ -86,26 +93,34 @@ class Tokopedia
 
     public function multipleProduct()
     {
-        if (strpos($this->url, 'https://shopee.co.id/shop/') === false) throw new TokopediaException('Id toko tidak ditemukan');
-        $id = str_replace('https://shopee.co.id/shop/', '', $this->url);
-        $id = explode('/', $id);
-        $id = $id[0];
-        // $urlApi = "https://shopee.co.id/api/v2/search_items/?by=sales&limit=30&match_id={$id}&newest=0&order=desc&page_type=shop&version=2";
-        $urlApi = "https://shopee.co.id/api/v2/search_items/?by=pop&entry_point=ShopBySearch&limit=30&match_id={$id}&newest=0&order=desc&page_type=shop&version=2";
+        $ids = str_replace(['https://www.tokopedia.com/', 'https://tokopedia.com/'], '', $this->url);
+        $ids = explode('/', $ids);
+        $this->shopId = $ids[0];
+        $this->etalase = $ids[2] ?? 'etalase';
+        // remomve query string
+        $this->page = (int) preg_replace('/\?.*/', '', $ids[3] ?? 1);
 
-        $request = Request::get(config('lastore.proxy_shared_hoting'));
-        if ($request->failed()) throw new TokopediaException("Gagal mengambil list produk, response body " . $request->body());
+        $request = Request::post(config('lastore.proxy_shared_hoting'), [], $this->getGqlShopInfo());
+        
+        if ($request->failed()) throw new TokopediaException("Gagal mengambil info toko, response body " . $request->body());
+        
         $result = json_decode($request->body());
-        if (!$result->items) throw new TokopediaException('Toko tidak ditemukan, response body ' . $request->body());
+        
+        if (!isset($result->data) || !$result->data) throw new TokopediaException('Toko tidak ditemukan, response body ' . $request->body());
+        
+        $this->shopId = $result->data->shopInfoByID->result[0]->shopCore->shopID;
+        
+        // get list products
+        $request = Request::post(config('lastore.proxy_shared_hoting'), [], $this->getGqlMultipleProduct());
 
-        $result = $result->items;
+        $result = json_decode($request->body());
+        $result = $result->data->GetShopProduct->data;
         $products = [];
         foreach ($result as $item) {
             $products[] = [
-                'item_id' => $item->itemid,
+                'item_id' => $item->product_id,
                 'name' => $item->name,
-                // 'image' => $this->urlFile . $item->image,
-                'api_url' => "https://shopee.co.id/api/v2/item/get?itemid={$item->itemid}&shopid={$id}",
+                'api_url' => $item->product_url,
             ];
         }
 
@@ -121,6 +136,38 @@ class Tokopedia
                 'productKey' => $this->itemId,
             ],
             'query' => 'query PDPInfoQuery($shopDomain: String, $productKey: String) {  getPDPInfo(productID: 0, shopDomain: $shopDomain, productKey: $productKey) {    basic {      id      shopID      name      alias      price      priceCurrency      lastUpdatePrice      description      minOrder      maxOrder      status      weight      weightUnit      condition      url      sku      gtin      isKreasiLokal      isMustInsurance      isEligibleCOD      isLeasing      catalogID      needPrescription      __typename    }    category {      id      name      title      breadcrumbURL      isAdult      detail {        id        name        breadcrumbURL        __typename      }      __typename    }    pictures {      picID      fileName      filePath      description      isFromIG      width      height      urlOriginal      urlThumbnail      url300      status      __typename    }    preorder {      isActive      duration      timeUnit      __typename    }    wholesale {      minQty      price      __typename    }    videos {      source      url      __typename    }    campaign {      campaignID      campaignType      campaignTypeName      originalPrice      discountedPrice      isAppsOnly      isActive      percentageAmount      stock      originalStock      startDate      endDate      endDateUnix      appLinks      hideGimmick      __typename    }    stats {      countView      countReview      countTalk      rating      __typename    }    txStats {      txSuccess      txReject      itemSold      itemSoldPaymentVerified      __typename    }    cashback {      percentage      __typename    }    variant {      parentID      isVariant      __typename    }    stock {      useStock      value      stockWording      __typename    }    menu {      name      __typename    }    __typename  }}'
+        ];
+
+        return $gql;
+    }
+
+    private function getGqlShopInfo()
+    {
+        $gql = [
+            'operationName' => 'ShopInfoCore',
+            'variables' => [
+                'id' => 0,
+                'domain' => $this->shopId,
+            ],
+            'query' => 'query ShopInfoCore($id: Int!, $domain: String) {  shopInfoByID(input: {shopIDs: [$id], fields: ["active_product", "address", "allow_manage", "assets", "core", "closed_info", "create_info", "favorite", "location", "status", "is_open", "other-goldos", "shipment", "shopstats", "shop-snippet", "other-shiploc", "shopHomeType"], domain: $domain, source: "shoppage"}) {    result {      shopCore {        description        domain        shopID        name        tagLine        defaultSort        __typename      }      createInfo {        openSince        __typename      }      favoriteData {        totalFavorite        alreadyFavorited        __typename      }      activeProduct      shopAssets {        avatar        cover        __typename      }      location      isAllowManage      isOpen      address {        name        id        email        phone        area        districtName        __typename      }      shipmentInfo {        isAvailable        image        name        product {          isAvailable          productName          uiHidden          __typename        }        __typename      }      shippingLoc {        districtName        cityName        __typename      }      shopStats {        productSold        totalTxSuccess        totalShowcase        __typename      }      statusInfo {        shopStatus        statusMessage        statusTitle        __typename      }      closedInfo {        closedNote        until        reason        __typename      }      bbInfo {        bbName        bbDesc        bbNameEN        bbDescEN        __typename      }      goldOS {        isGold        isGoldBadge        isOfficial        badge        __typename      }      shopSnippetURL      customSEO {        title        description        bottomContent        __typename      }      __typename    }    error {      message      __typename    }    __typename  }}'
+        ];
+
+        return $gql;
+    }
+
+    private function getGqlMultipleProduct()
+    {
+        $gql = [
+            'operationName' => 'ShopProducts',
+            'variables' => [
+                'sid' => $this->shopId,
+                'page' => $this->page,
+                'perPage' => 80,
+                'keyword' => '',
+                'etalaseId' => $this->etalase,
+                'sort' => 1,
+            ],
+            'query' => 'query ShopProducts($sid: String!, $page: Int, $perPage: Int, $keyword: String, $etalaseId: String, $sort: Int) {  GetShopProduct(shopID: $sid, filter: {page: $page, perPage: $perPage, fkeyword: $keyword, fmenu: $etalaseId, sort: $sort}) {    status    errors    links {      prev      next      __typename    }    data {      name      product_url      product_id      price {        text_idr        __typename      }      primary_image {        original        thumbnail        resize300        __typename      }      flags {        isSold        isPreorder        isWholesale        isWishlist        __typename      }      campaign {        discounted_percentage        original_price_fmt        start_date        end_date        __typename      }      label {        color_hex        content        __typename      }      label_groups {        position        title        type        __typename      }      badge {        title        image_url        __typename      }      stats {        reviewCount        rating        __typename      }      category {        id        __typename      }      __typename    }    __typename  }}'
         ];
 
         return $gql;
