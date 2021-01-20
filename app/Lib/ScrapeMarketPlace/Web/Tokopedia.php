@@ -93,7 +93,7 @@ class Tokopedia
         // $urlApi = "https://shopee.co.id/api/v2/search_items/?by=sales&limit=30&match_id={$id}&newest=0&order=desc&page_type=shop&version=2";
         $urlApi = "https://shopee.co.id/api/v2/search_items/?by=pop&entry_point=ShopBySearch&limit=30&match_id={$id}&newest=0&order=desc&page_type=shop&version=2";
 
-        $request = Request::get($urlApi);
+        $request = Request::get(config('lastore.proxy_shared_hoting'));
         if ($request->failed()) throw new TokopediaException("Gagal mengambil list produk, response body " . $request->body());
         $result = json_decode($request->body());
         if (!$result->items) throw new TokopediaException('Toko tidak ditemukan, response body ' . $request->body());
