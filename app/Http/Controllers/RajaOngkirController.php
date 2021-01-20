@@ -70,7 +70,7 @@ class RajaOngkirController extends Controller
         $raw = Http::get('https://api.pvita.babaturan.net/ongkir', [
             'dari' => $kecamatanToko,
             'ke' => $request->ke,
-            'berat' => $request->berat,
+            'berat' => $request->berat == 0 ? 1 : $request->berat,
             'kurir' => 'jne,tiki,pos',
         ]);
 

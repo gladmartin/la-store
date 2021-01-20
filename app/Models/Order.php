@@ -20,4 +20,9 @@ class Order extends Model
     {
         return $this->hasOne(Delivery::class);
     }
+
+    public function metas()
+    {
+        return $this->morphMany(Meta::class, 'metaable');
+    }
 }

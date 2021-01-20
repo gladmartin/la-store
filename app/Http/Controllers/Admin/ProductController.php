@@ -43,13 +43,28 @@ class ProductController extends Controller
     public function store(ProductStoreRequest $request)
     {
         $thumbnailUploaded = $request->thumbnail;
+        $imagesUploaded = null;
+        if ($request->galeri) {
+            $imagesUploaded = explode('|', $request->galeri);
+        }
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail');
             $thumbnailUploaded = Storage::put('public/product', $thumbnail);
+            $thumbnailUploaded = basename($thumbnailUploaded);
+        }
+        $category = $request->kategori;
+        if ($request->url_sumber) {
+            $category = Category::firstOrCreate([
+                'slug' => Str::slug($request->kategori),
+            ],[
+                'name' => $request->kategori,
+                'user_id' => $request->user()->id,
+            ]);
+            $category = $category->id;
         }
         $product = Product::create([
             'user_id' => $request->user()->id,
-            'category_id' => 1,
+            'category_id' => $category,
             'title' => $request->produk,
             'slug' => Str::slug($request->produk),
             'deskripsi' => $request->deskripsi,
@@ -59,6 +74,8 @@ class ProductController extends Controller
             'berat' => $request->berat,
             'kondisi' => $request->kondisi,
             'image' => $thumbnailUploaded,
+            'images' => json_encode($imagesUploaded),
+            'url_sumber' => $request->url_sumber,
         ]);
         $variants = null;
         foreach ($request->varian as $key => $value) {

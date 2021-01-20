@@ -23,8 +23,9 @@
     <link href="{{ asset('css/main-mobile.css?i=' . time()) }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a6c2ef0f76.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-<link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
     @stack('css')
+    <link href="{{ asset('css/snackbarlight.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -208,6 +209,7 @@
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/snackbarlight.min.js') }}"></script>
     <script>
         const BASE_URL = '{{ url("/") }}';
         const BASE_URL_API = '{{ url("api") }}';
@@ -227,6 +229,12 @@
             }
         });
     </script>
+     @if (session('info'))
+     <script>
+         let info = "{{ session('info') }}"
+         new Snackbar(info);
+     </script>
+     @endif
     @stack('js')
 
 </body>

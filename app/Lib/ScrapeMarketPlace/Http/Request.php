@@ -10,13 +10,13 @@ class Request
 
     public static function get($url, array $headers = [], $parameter = null)
     {
-        $response = Http::get($url, $parameter);
+        $response = Http::withHeaders($headers)->get($url, $parameter);
         return $response;
     }
 
-    public static function post($url, array $headers = [], $body = null)
+    public static function post($url, array $headers = [], $body = [])
     {
-        $response = Http::asForm()->post($url, $body);
+        $response = Http::withHeaders($headers)->post($url, $body);
         return $response;
     }
 }

@@ -32,6 +32,8 @@ class ProductStoreRequest extends FormRequest
             'thumbnail' => ['required'],
             'galeri' => ['nullable'],
             'deskripsi' => ['required'],
+            'url_sumber' => ['nullable', 'url'],
+            'kategori' => ['required'],
         ];
     }
 }

@@ -12,7 +12,7 @@
         </div>
     </div> --}}
 
-    <div class="row justify-content-center mt-4">
+    {{-- <div class="row justify-content-center mt-4">
         <div class="col-12 px-xs-0">
             <div class="shadow-sm bg-white p-4 rounded">
                 <b>Kategori</b>
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="row justify-content-center mt-4">
         <div class="col-12 px-xs-0">

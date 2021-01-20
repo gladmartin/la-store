@@ -9,10 +9,26 @@ use Illuminate\Http\Request;
 
 class ScrapeMarketPlaceController extends Controller
 {
+
+    public function index()
+    {
+        return view('admin.scrape.index');
+    }
+
+
     public function single(SingleProductRequest $request)
     {
-        // $url = 'https://shopee.co.id/AMD-Athlon-3000G-(Radeon-Vega-3)-3.5Ghz-AM4-i.312453948.7755235377';
         $product = ScrapeMarketPlace::product($request->url);
+        
+        return response()->json([
+            'success' => true,
+            'data' => $product,
+        ]);
+    }
+
+    public function multiple(SingleProductRequest $request)
+    {
+        $product = ScrapeMarketPlace::products($request->url);
         
         return response()->json([
             'success' => true,

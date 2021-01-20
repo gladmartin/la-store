@@ -19,7 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->string('name', 100);
             $table->string('slug', 150);
-            $table->string('icon', 100);
+            $table->string('icon', 100)->nullable();
             $table->timestamps();
         });
     }

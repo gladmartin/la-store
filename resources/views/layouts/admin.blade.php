@@ -18,6 +18,13 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
+    
+    <link href="{{ asset('css/snackbarlight.min.css') }}" rel="stylesheet">
+    <style>
+        a:hover {
+            text-decoration: none;
+        }
+    </style>
     @stack('css')
 
 </head>
@@ -53,25 +60,30 @@
                     <span>Produk</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('order.index') }}">
+                <a class="nav-link" href="{{ route('scrape-mp.index') }}">
+                    <i class="fas fa-fw fa-store"></i>
+                    <span>Scrape produk</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('order.index') }}">
                     <i class="fas fa-fw fa-shopping-bag"></i>
                     <span>Order</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('order.index') }}">
+                <a class="nav-link" href="{{ route('delivery.index') }}">
                     <i class="fas fa-fw fa-box"></i>
                     <span>Delivery</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('account.index') }}">
+                <a class="nav-link" href="{{ route('setting.web') }}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>Pengaturan web</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('account.index') }}">
+                <a class="nav-link" href="{{ route('account.index') }}">
                     <i class="fas fa-fw fa-user"></i>
                     <span>Akun anda</span></a>
             </li>
@@ -207,6 +219,9 @@
     <script src="{{ asset('/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
+    
+    <script src="{{ asset('js/snackbarlight.min.js') }}"></script>
+
     <script>
         const CSRF_TOKEN = '{{ csrf_token() }}';
         const BASE_URL = '{{ url("/") }}';
@@ -216,7 +231,12 @@
             $('.datatable').DataTable();
         });
     </script>
-
+ @if (session('info'))
+ <script>
+     let info = "{{ session('info') }}"
+     new Snackbar(info);
+ </script>
+ @endif
     @stack('js')
 
 </body>

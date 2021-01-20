@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Order\MakeOrder;
+use App\Http\Requests\Order\StoreKonfirmasiBayar;
 use App\Jobs\OrderCreated;
 use App\Models\Delivery;
+use App\Models\Meta;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\Variant;
@@ -73,6 +75,44 @@ class OrderController extends Controller
         return view('site.order.konfirmasi-bayar');
     }
 
+    public function storeKonfirmasiBayar(StoreKonfirmasiBayar $request)
+    {
+        $order = Order::where('invoice', $request->invoice)->first();
+
+        if (!$order) {
+            return redirect()->back()->with('info', 'No invoice yang kamu masukkan tidak ditemukan')->withInput();
+        }
+        
+        if ($order->status_order == 'SEDANG DIKIRIM') {
+            return redirect()->back()->with('info', 'Orderan anda sedang dalam perjalanan!')->withInput();
+        }
+
+        if ($request->nominal < $order->bayar) {
+            return redirect()->back()->with('info', 'Nominal bayar yang kamu transfer tidak sesaui dengan jumlah tagihan ' . rupiah($order->bayar))->withInput();
+        }
+
+        $meta = [
+            'key' => 'user_konfirmasi_order',
+            'value' => json_encode([
+                'nama_pengirim' => $request->nama_pengirim,
+                'bank_pengirim' => $request->bank_pengirim,
+                'bank_tujuan' => $request->bank_tujuan,
+                'nominal' => $request->nominal,
+            ])
+        ];
+
+        $order->metas()->updateOrCreate([
+            'metaable_id' => $order->id,
+            'metaable_type' => Order::class
+        ], $meta);
+
+        $order->update([
+            'status_pembayaran' => 'MENUNGGU KONFIRMASI',
+        ]);
+
+        return redirect()->back()->with('info', 'Terimakasih, orderan anda akan segera kami proses.')->withInput();
+    }
+
     public function lacak()
     {
         return view('site.order.lacak');
@@ -83,5 +123,22 @@ class OrderController extends Controller
         $order = Order::where('invoice', $invoiceId)->firstOrFail();
 
         return view('site.order.sukses', compact('order'));
+    }
+
+    public function lacakJson($invoice)
+    {
+        $order = Order::where('invoice', $invoice)->where('status_order', 'SEDANG DIKIRIM')->with('delivery')->first();
+
+        if (!$order) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data resi tidak ditemukan, status orderan kamu belum dikrim',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $order->delivery->details,
+        ]);
     }
 }

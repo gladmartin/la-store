@@ -3,8 +3,8 @@
         <div class="card__product shadow-sm">
             <img src="{{ $item->image }}" alt="">
             <div class="p-3">
-                <a href="{{ route('product.single', [$item->slug, $item->id]) }}"
-                    class="card__product__title">{{ $item->title }}</a>
+                <span href="{{ route('product.single', [$item->slug, $item->id]) }}"
+                    class="card__product__title">{{ $item->title }}</span>
                 <div>
                     @if ($item->diskon > 0)
                     <div class="diskon">
