@@ -39,7 +39,7 @@ class Tokopedia
         $this->itemId = $ids[2];
         if ($this->itemId == '') throw new TokopediaException('Produk slug tidak ditemukan');
         $body = $this->getGqlSingleProduct();
-        $request = Request::post($this->gqlUrl, $this->headersTokped, $body);
+        $request = Request::post(config('lastore.proxy_shared_hoting'), [], $body);
         if ($request->failed()) throw new TokopediaException("Gagal mengambil info produk, response body " . $request->body());
         $result = json_decode($request->body());
         if (!$result->data) throw new TokopediaException('Produk tidak ditemukan, response body ' . $request->body());
