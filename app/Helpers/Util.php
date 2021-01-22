@@ -14,11 +14,16 @@ function isMenuActive($routeName)
 
 function webOption()
 {
-    $options = Option::all();
-    $data = new stdClass;
-    foreach ($options as $item) {
-        $data->{$item->name} = $item->value;
-    }
+    try {
+        $options = Option::all();
+        $data = new stdClass;
+        foreach ($options as $item) {
+            $data->{$item->name} = $item->value;
+        }
 
-    return $data;
+        return $data;
+    } catch (\Throwable $th) {
+        $data = new stdClass;
+        return $data;
+    }
 }
