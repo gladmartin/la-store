@@ -14,25 +14,25 @@
                 <div class="form-group col-lg-4">
                     <label>Nama toko / nama web</label>
                     <input type="text" name="options[site_title]" class="form-control"
-                        value="{{ $webOption->site_title ?? '' }}">
+                        value="{{ $webOption->get('site_title') }}">
                 </div>
                 <div class="form-group col-lg-8">
                     <label>Deskripsi / tagline web</label>
                     <input type="text" name="options[site_description]" class="form-control"
-                        value="{{ $webOption->site_description ?? '' }}">
+                        value="{{ $webOption->get('site_description') }}">
                 </div>
                 <div class="form-group col-lg-4">
                     <label>Kontak WA / No hp</label>
-                    <input type="text" name="options[phone]" class="form-control" value="{{ $webOption->phone ?? '' }}">
+                    <input type="text" name="options[phone]" class="form-control" value="{{ $webOption->get('phone') }}">
                 </div>
                 <div class="form-group col-lg-4">
                     <label>Logo toko</label>
-                    <input type="file" name="logo" class="form-control" value="{{ $webOption->logo ?? '' }}">
+                    <input type="file" name="logo" class="form-control" value="{{ $webOption->get('logo') }}">
                     <small>Biarkan kosong jika tidak ingin merubahnya.</small>
                 </div>
                 <div class="form-group col-lg-4">
                     <label>Kontak email</label>
-                    <input type="text" name="options[email]" class="form-control" value="{{ $webOption->email ?? '' }}">
+                    <input type="text" name="options[email]" class="form-control" value="{{ $webOption->get('email') }}">
                 </div>
                
             </div>
@@ -49,7 +49,7 @@
                                 </div>
                             </span>
                         </div>
-                    <select name="options[province]" required class="custom-select" id="provinsi" class="provinsi" disabled data-province="{{ $webOption->province }}">
+                    <select name="options[province]" required class="custom-select" id="provinsi" class="provinsi" disabled data-province="{{ $webOption->get('province') }}">
                             <option selected disabled>Pilih provinsi</option>
                         </select>
                     </div>
@@ -59,7 +59,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text icon-kota"><i class="fa fa-map-marked-alt"></i></span>
                         </div>
-                        <select required class="custom-select" name="options[city]" id="city" class="kota" disabled data-city="{{ $webOption->city }}">
+                        <select required class="custom-select" name="options[city]" id="city" class="kota" disabled data-city="{{ $webOption->get('city') }}">
                             <option selected disabled>Pilih kota</option>
                         </select>
                     </div>
@@ -69,7 +69,7 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text icon-kecamatan"><i class="fa fa-map-marked-alt"></i></span>
                         </div>
-                        <select required class="custom-select" name="options[subdistrict]" id="subdistrict" class="kecamatan" disabled data-subdistrict="{{ $webOption->subdistrict }}">
+                        <select required class="custom-select" name="options[subdistrict]" id="subdistrict" class="kecamatan" disabled data-subdistrict="{{ $webOption->get('subdistrict') }}">
                             <option selected disabled>Pilih kecamatan</option>
                         </select>
                     </div>
@@ -79,23 +79,23 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="wa"><i class="fa fa-map-marker"></i></span>
                         </div>
-                        <textarea required placeholder="Masukkan alamat lengkap atau nama jalan" type="text" id="alamat" class="form-control" name="options[address]">{{ $webOption->address ?? '' }}</textarea>
+                        <textarea required placeholder="Masukkan alamat lengkap atau nama jalan" type="text" id="alamat" class="form-control" name="options[address]">{{ $webOption->get('address')}}</textarea>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col-lg-2">
                     <label>Skin web</label>
-                    <input type="color" name="options[site_default_color]" class="form-control" value="{{ $webOption->site_default_color ?? '' }}">
+                    <input type="color" name="options[site_default_color]" class="form-control" value="{{ $webOption->get('site_default_color')}}">
                 </div>
                 <div class="form-group col-lg-6">
                     <label>Link google font <a href="https://fonts.google.com/" target="blank">Cari disni</a></label>
-                    <input required type="url" name="options[site_default_font_url]" class="form-control" value="{{ $webOption->site_default_font_url ?? '' }}">
+                    <input required type="url" name="options[site_default_font_url]" class="form-control" value="{{ $webOption->get('site_default_font_url')}}">
                     <small>Masukkan link fontnya, contoh <b>https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap</b></small>
                 </div>
                 <div class="form-group col-lg-4">
                     <label>Font family</a></label>
-                    <input required type="text" name="options[site_default_font_family]" class="form-control" value="{{ $webOption->site_default_font_family ?? '' }}">
+                    <input required type="text" name="options[site_default_font_family]" class="form-control" value="{{ $webOption->get('site_default_font_family')}}">
                     <small>Contoh <b>Roboto</b>, samakan dengan url yg dimasukkan.</small>
                 </div>
             </div>

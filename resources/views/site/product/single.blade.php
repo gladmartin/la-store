@@ -4,7 +4,7 @@
 
 @push('meta')
 <meta property="og:image" content="{{ $product->image }}" />
-<meta property="og:title" content="{{ $product->title }} | {{ safeUndefined($webOption->site_title) }}" />
+<meta property="og:title" content="{{ $product->title }} | {{ $webOption->get('site_title') }}" />
 <meta property="og:description" content="{{ $product->deskripsi }}" />
 @endpush()
 

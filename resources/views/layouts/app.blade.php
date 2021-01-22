@@ -5,15 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- SEO Tags -->
-    <meta name="theme-color" content="{{ safeUndefined($webOption->site_default_color) }}">
-    <meta name="msapplication-navbutton-color" content="{{ safeUndefined($webOption->site_default_color) }}">
-    <meta name="apple-mobile-web-app-status-bar-style" content="{{ safeUndefined($webOption->site_default_color) }}">
+    <meta name="theme-color" content="{{ $webOption->get('site_default_color') }}">
+    <meta name="msapplication-navbutton-color" content="{{ $webOption->get('site_default_color') }}">
+    <meta name="apple-mobile-web-app-status-bar-style" content="{{ $webOption->get('site_default_color') }}">
     <meta name="Language" content="Indonesia" />
     <meta http-equiv="content-language" content="id" />
     @stack('meta')
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') | {{ safeUndefined($webOption->site_title) }}</title>
+    <title>@yield('title') | {{ $webOption->get('site_title') }}</title>
     <link rel="alternate" href="{{ url()->current() }}" hreflang="id-ID" />
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -25,17 +25,17 @@
     <link href="{{ asset('css/main-mobile.css?i=' . time()) }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a6c2ef0f76.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ asset('storage/' . safeUndefined($webOption->logo)) }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('storage/' . $webOption->get('logo')) }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="{{ safeUndefined($webOption->site_default_font_url) }}" rel="stylesheet">
+    <link href="{{ $webOption->get('site_default_font_url') }}" rel="stylesheet">
     <style>
         :root {
-            --main-color: {{safeUndefined($webOption->site_default_color)}};
-            --main-color-low: {{safeUndefined($webOption->site_default_color)}};
+            --main-color: {{$webOption->get('site_default_color')}};
+            --main-color-low: {{$webOption->get('site_default_color')}};
             /* --main-color-low: rgba(255, 146, 99, 0.301); */
         }
         body {
-            font-family: '{{ safeUndefined($webOption->site_default_font_family) }}', sans-serif !important;
+            font-family: '{{ $webOption->get('site_default_font_family') }}', sans-serif !important;
         }
     </style>
     @stack('css')
