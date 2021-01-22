@@ -3,9 +3,9 @@
 @section('title', 'Menampilkan hasil produk dengan kategori ' . $category->name)
 
 @push('meta')
-<meta property="og:image" content="{{ asset('storage/' . $webOption->logo) }}" />
+<meta property="og:image" content="{{ asset('storage/' . safeUndefined($webOption->logo)) }}" />
 <meta property="og:title" content="Menampilkan hasil produk dengan kategori" />
-<meta property="og:description" content="{{ $webOption->site_description }}" />
+<meta property="og:description" content="{{ safeUndefined($webOption->site_description) }}" />
 @endpush()
 
 @section('content')

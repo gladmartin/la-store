@@ -27,3 +27,8 @@ function webOption()
         return $data;
     }
 }
+
+function safeUndefined($var, $default = '')
+{
+    return $var ?? $default;
+}

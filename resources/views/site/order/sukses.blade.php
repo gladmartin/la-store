@@ -3,9 +3,9 @@
 @section('title', 'Detail pesanan')
 
 @push('meta')
-<meta property="og:image" content="{{ asset('storage/' . $webOption->logo) }}" />
+<meta property="og:image" content="{{ asset('storage/' . safeUndefined($webOption->logo)) }}" />
 <meta property="og:title" content="Detail pesanan" />
-<meta property="og:description" content="{{ $webOption->site_description }}" />
+<meta property="og:description" content="{{ safeUndefined($webOption->site_description) }}" />
 @endpush()
 
 @push('css')

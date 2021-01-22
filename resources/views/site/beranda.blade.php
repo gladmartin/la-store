@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', $webOption->site_description)
+@section('title', safeUndefined($webOption->site_description))
 
 @push('meta')
-<meta property="og:image" content="{{ asset('storage/' . $webOption->logo) }}" />
-<meta property="og:title" content="{{ $webOption->site_description }} | {{ $webOption->site_title }}" />
-<meta property="og:description" content="{{ $webOption->site_description }}" />
+<meta property="og:image" content="{{ asset('storage/' . safeUndefined($webOption->logo)) }}" />
+<meta property="og:title" content="{{ safeUndefined($webOption->site_description) }} | {{ safeUndefined($webOption->site_title) }}" />
+<meta property="og:description" content="{{ safeUndefined($webOption->site_description) }}" />
 @endpush()
 
 @section('content')
