@@ -4,18 +4,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="theme-color" content="rgb(255, 45, 32)">
-    <meta name="msapplication-navbutton-color" content="rgb(255, 45, 32)">
-    <meta name="apple-mobile-web-app-status-bar-style" content="rgb(255, 45, 32)">
-
+    <!-- SEO Tags -->
+    <meta name="theme-color" content="{{ $webOption->site_default_color }}">
+    <meta name="msapplication-navbutton-color" content="{{ $webOption->site_default_color }}">
+    <meta name="apple-mobile-web-app-status-bar-style" content="{{ $webOption->site_default_color }}">
+    <meta name="Language" content="Indonesia" />
+    <meta http-equiv="content-language" content="id" />
+    @stack('meta')
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') | {{ config('app.name', 'Laravel') }}</title>
+    <title>@yield('title') | {{ $webOption->site_title }}</title>
+    <link rel="alternate" href="{{ url()->current() }}" hreflang="id-ID" />
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/reset-bootstrap.css?i=' . time()) }}) }}" rel="stylesheet">
@@ -23,7 +25,19 @@
     <link href="{{ asset('css/main-mobile.css?i=' . time()) }}" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a6c2ef0f76.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('storage/' . $webOption->logo) }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="{{ $webOption->site_default_font_url }}" rel="stylesheet">
+    <style>
+        :root {
+            --main-color: {{$webOption->site_default_color}};
+            --main-color-low: {{$webOption->site_default_color}};
+            /* --main-color-low: rgba(255, 146, 99, 0.301); */
+        }
+        body {
+            font-family: '{{ $webOption->site_default_font_family }}', sans-serif !important;
+        }
+    </style>
     @stack('css')
     <link href="{{ asset('css/snackbarlight.min.css') }}" rel="stylesheet">
 </head>

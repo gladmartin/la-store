@@ -77,6 +77,7 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
 
     // setting web
     Route::get('setting/web', [SettingController::class, 'web'])->name('setting.web');
+    Route::post('setting/web/store', [SettingController::class, 'store'])->name('setting.web.store');
     
 
 });

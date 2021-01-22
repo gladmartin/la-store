@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Pesanan Sukses')
+@section('title', 'Detail pesanan')
+
+@push('meta')
+<meta property="og:image" content="{{ asset('storage/' . $webOption->logo) }}" />
+<meta property="og:title" content="Detail pesanan" />
+<meta property="og:description" content="{{ $webOption->site_description }}" />
+@endpush()
 
 @push('css')
 <style type="text/css">

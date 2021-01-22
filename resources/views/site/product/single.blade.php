@@ -2,6 +2,12 @@
 
 @section('title', $product->title)
 
+@push('meta')
+<meta property="og:image" content="{{ $product->image }}" />
+<meta property="og:title" content="{{ $product->title }} | {{ $webOption->site_title }}" />
+<meta property="og:description" content="{{ $product->deskripsi }}" />
+@endpush()
+
 @section('content')
 <div class="container mt-4">
     <nav class="la-breadcrumb" aria-label="breadcrumb">

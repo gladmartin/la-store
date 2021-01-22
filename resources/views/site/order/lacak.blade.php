@@ -2,6 +2,12 @@
 
 @section('title', 'Lacak pesanan')
 
+@push('meta')
+<meta property="og:image" content="{{ asset('storage/' . $webOption->logo) }}" />
+<meta property="og:title" content="Lacak pesanan" />
+<meta property="og:description" content="{{ $webOption->site_description }}" />
+@endpush()
+
 @section('content')
 <div class="container mt-4">
     <nav class="la-breadcrumb" aria-label="breadcrumb">

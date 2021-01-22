@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Situs belanja online')
+@section('title', $webOption->site_description)
+
+@push('meta')
+<meta property="og:image" content="{{ asset('storage/' . $webOption->logo) }}" />
+<meta property="og:title" content="{{ $webOption->site_description }} | {{ $webOption->site_title }}" />
+<meta property="og:description" content="{{ $webOption->site_description }}" />
+@endpush()
 
 @section('content')
 <div class="container">
@@ -35,7 +41,7 @@
         </div>
     </div> --}}
 
-    <div class="row justify-content-center mt-4">
+    {{-- <div class="row justify-content-center mt-4">
         <div class="col-12 px-xs-0">
             <div class="shadow-sm bg-white p-4 rounded">
                 <b>Produk terlaris</b>
@@ -45,7 +51,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div class="row justify-content-center mt-4">
         <div class="col-12 px-xs-0">
@@ -55,8 +61,13 @@
                 <div class="row">
                     @each('components.card-item-product', $produkTerbaru, 'item')
                 </div>
+                <div class="text-center">
+                    <a href="" class="btn btn-outline-primary">Lihat produk lainnya</a>
+                </div>
             </div>
+            
         </div>
+       
     </div>
 </div>
 @endsection

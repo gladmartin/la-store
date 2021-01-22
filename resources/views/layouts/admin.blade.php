@@ -11,19 +11,22 @@
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('/vendor/fontawesome-free/css/all.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <link rel="shortcut icon" href="{{ asset('/favicon.png') }}" type="image/x-icon">
 
     <!-- Custom styles for this template-->
     <link href="{{ asset('/css/sb-admin-2.min.css') }}" rel="stylesheet">
     <link href="{{ asset('/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
-    
+
     <link href="{{ asset('css/snackbarlight.min.css') }}" rel="stylesheet">
     <style>
         a:hover {
             text-decoration: none;
         }
+
     </style>
     @stack('css')
 
@@ -38,7 +41,8 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}" target="blank">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url('/') }}"
+                target="blank">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-store"></i>
                 </div>
@@ -219,7 +223,7 @@
     <script src="{{ asset('/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
 
-    
+
     <script src="{{ asset('js/snackbarlight.min.js') }}"></script>
 
     <script>
@@ -227,16 +231,18 @@
         const BASE_URL = '{{ url("/") }}';
         const BASE_URL_API = '{{ url("api") }}';
         const BASE_URL_ADMIN = '{{ url("/app-panel") }}';
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('.datatable').DataTable();
         });
+
     </script>
- @if (session('info'))
- <script>
-     let info = "{{ session('info') }}"
-     new Snackbar(info);
- </script>
- @endif
+    @if (session('info'))
+    <script>
+        let info = "{{ session('info') }}"
+        new Snackbar(info);
+
+    </script>
+    @endif
     @stack('js')
 
 </body>
