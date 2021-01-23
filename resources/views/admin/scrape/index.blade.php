@@ -41,6 +41,17 @@
                 <input type="checkbox" name="is_toko" id="is-toko"> 
                 <label for="is-toko">Url toko?</label>
             </div>
+           <div class="row">
+            <div class="form-group col-lg-6">
+                <label for="is-toko">Kali berapa persen</label>
+                <input type="range" class="d-block col-12 col-lg-6" name="persen" id="persen" value="0" min="0" max="100" oninput="this.nextElementSibling.value = this.value">
+                <output>0</output>%
+            </div>
+            <div class="form-group col-lg-6">
+                <label for="is-toko">Tambah berapa rupiah</label>
+                <input type="number" class="d-block col-12 col-lg-6 form-control" name="tambah" id="tambah" value="0" min="0">
+            </div>
+           </div>
             <button type="submit" class="btn btn-primary btn-sm shadow btn-mulai">
                 <span class="icon-btn">
                     <i class="fa fa-plus"></i>
@@ -193,16 +204,17 @@
             if (!isMuliptleProduct) {
                 await fetchSingleProduct();
                 await postProduct();
-                alert('Selesai');
             } else {
                 await handleMultipleProduct();
             }
         } catch (error) {
             
         }
+        $('.form-scrape')[0].reset()
         $('.btn-mulai').removeAttr('disabled');
         $('.btn-mulai .icon-btn').html('<i class="fas fa-circle-notch fa-plus"></i>');
         $('.btn-mulai .txt').html('Mulai');
+        alert('Selesai');
     });
 
     async function handleMultipleProduct() {
@@ -216,7 +228,6 @@
             await postProduct();
             i++;
         }
-        alert('Selesai');
     }
 
     function checkIsMultipleProduct() {
@@ -243,7 +254,9 @@
     }
 
     async function fetchSingleProduct() {
-        const raw = await fetch(`${BASE_URL_ADMIN}/scrape-mp/single?url=${encodeURIComponent(parseUrl.href)}`, {
+        let persen = $('#persen').val();
+        let tambah = $('#tambah').val();
+        const raw = await fetch(`${BASE_URL_ADMIN}/scrape-mp/single?url=${encodeURIComponent(parseUrl.href)}&persen=${persen}&tambah=${tambah}`, {
             headers: {
                 'accept': 'application/json',
             }

@@ -81,9 +81,24 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('setting.web') }}">
+                <a class="nav-link" href="{{ route('post.index') }}">
+                    <i class="fas fa-fw fa-blog"></i>
+                    <span>Post</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+                    aria-controls="collapsePages">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Pengaturan web</span></a>
+                    <span>Pengaturan</span>
+                </a>
+                <div id="collapsePages" class="collapse" aria-labelledby="headingPages"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{ route('setting.web') }}">Umum</a>
+                        <a class="collapse-item" href="{{ route('setting.footer') }}">Widget footer</a>
+                    </div>
+                </div>
             </li>
 
             <li class="nav-item">
@@ -226,7 +241,13 @@
 
     <script src="{{ asset('js/snackbarlight.min.js') }}"></script>
 
+    
+    <script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+
     <script>
+        const el = document.querySelectorAll('img');
+        const observer = lozad(el); 
+        observer.observe();
         const CSRF_TOKEN = '{{ csrf_token() }}';
         const BASE_URL = '{{ url("/") }}';
         const BASE_URL_API = '{{ url("api") }}';
@@ -234,6 +255,7 @@
         $(document).ready(function () {
             $('.datatable').DataTable();
         });
+        
 
     </script>
     @if (session('info'))

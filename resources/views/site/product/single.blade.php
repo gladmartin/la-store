@@ -38,7 +38,7 @@
                             <div id="carouselProductImageControls" class="carousel slide" data-ride="carousel">
                                 <div class="carousel-inner">
                                     <div class="carousel-item active">
-                                        <img src="{{ $product->image }}" class="d-block w-100" alt="{{ $product->title }}">
+                                        <img data-placeholder-background="lightgrey" data-src="{{ $product->image }}" class="d-block w-100" alt="{{ $product->title }}">
                                     </div>
                                 </div>
                                 <a class="carousel-control-prev" href="#carouselProductImageControls" role="button"
@@ -83,7 +83,7 @@
                                             <div class="d-flex flex-wrap">
                                                 @foreach ($item['items'] as $varian)
                                                 <div class="mb-3">
-                                                    <a class="px-4 mr-2 btn-variasi {{ $item['name'] }} {{ $loop->iteration == 1 ? 'terpilih' : '' }}" data-variasi="{{ $item['name'] }}" data-id="{{ $varian['id'] }}" href="/#">{{ $varian['name'] }}</a>
+                                                    <a class="px-4 mr-2 btn-variasi {{ Str::slug($item['name']) }} {{ $loop->iteration == 1 ? 'terpilih' : '' }}" data-variasi="{{ Str::slug($item['name']) }}" data-id="{{ $varian['id'] }}" href="/#">{{ $varian['name'] }}</a>
                                                 </div>
                                                 @endforeach
                                             </div>
@@ -266,7 +266,7 @@
 </div>
 
  {{-- Wa floating button --}}
-<a href="https://api.whatsapp.com/send?phone=6289530757365&text=Hai mau tanya tentang {{ $product->title }} ({{ url()->current() }})" class="wa-float" target="_blank" title="Tanya ke CS kami!">
+<a href="https://api.whatsapp.com/send?phone={{ $webOption->get('phone') }}&text=Hai mau tanya tentang {{ $product->title }} ({{ url()->current() }})" class="wa-float" target="_blank" title="Tanya ke CS kami!">
     <i class="fa fa-whatsapp my-float"></i>
 </a>
 
@@ -582,7 +582,6 @@
             if (!variantId) return;
             variants.push(variantId);
         });
-
 
         let body = {
             kuantitas,

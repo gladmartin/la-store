@@ -16,7 +16,7 @@ class OrderController extends Controller
 {
     public function store(MakeOrder $request)
     {
-        $invoice = date('ymd') . random_int(11111111111, 99999999999);
+        $invoice = date('ymd') . random_int(111111, 999999);
         $product = Product::find($request->product_id);
         if (!$product->stok > $request->kuantitas) {
             return response()->json([

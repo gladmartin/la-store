@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\RajaOngkir\CostOngkir;
 use App\Models\City;
+use App\Models\Option;
 use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -65,7 +66,7 @@ class RajaOngkirController extends Controller
 
     public function ongkir(CostOngkir $request)
     {
-        $kecamatanToko = '5331'; //Tambusai Utara
+        $kecamatanToko = Option::where('name', 'subdistrict')->first()->value ?? 1;
         // sementara pakai punya orang dulu.
         $raw = Http::get('https://api.pvita.babaturan.net/ongkir', [
             'dari' => $kecamatanToko,

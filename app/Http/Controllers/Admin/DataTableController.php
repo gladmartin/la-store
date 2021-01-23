@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Delivery;
 use App\Models\Order;
+use App\Models\Post;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -118,6 +119,55 @@ class DataTableController extends Controller
             </form>";
             })
             ->rawColumns(['aksi', 'customer', 'invoice'])
+            ->make(true);
+    }
+
+    public function posts()
+    {
+        $data = Post::query()->where('type', 'post');;
+
+        return datatables()
+            ->of($data)
+            ->editColumn('created_at', function ($row) {
+                return $row->created_at->format('d M Y h:i:s');
+            })
+            ->editColumn('title', function ($row) {
+                return '<a href="'. route('post.single', [$row->slug, $row->id]) .'">'. $row->title .'</a>';
+            })
+            ->editColumn('image', function ($row) {
+                return '<img class="lozad" src="'. image($row->image) .'" width="200" height="200" />';
+            })
+            ->addColumn('aksi', function ($row) {
+                // return $sumber
+                return "<form action='" . route('post.destroy', $row->id) . "' method='post'>
+                <input type='hidden' name='_token' value=" . csrf_token() . " />
+                <input type='hidden' name='_method' value='delete'/>
+                <a title='Edit' href='" . route('post.edit', $row->id) . "' class='btn btn-dark
+                btn-sm'><i class='fa fa-edit'></i></a>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+            </form>";
+            })
+            ->rawColumns(['aksi', 'image', 'title'])
+            ->make(true);
+    }
+
+    public function footer()
+    {
+        $data = Post::query()->where('type', 'widget_footer');
+
+        return datatables()
+            ->of($data)
+            ->addColumn('aksi', function ($row) {
+                // return $sumber
+                return "<form action='" . route('post.destroy', $row->id) . "' method='post'>
+                <input type='hidden' name='_token' value=" . csrf_token() . " />
+                <input type='hidden' name='_method' value='delete'/>
+                <a title='Edit' href='" . route('post.edit', $row->id) . "?type=widget_footer' class='btn btn-dark
+                btn-sm'><i class='fa fa-edit'></i></a>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+            </form>";
+            })
+            ->rawColumns(['aksi'])
             ->make(true);
     }
 }

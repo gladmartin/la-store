@@ -62,7 +62,7 @@
                     @each('components.card-item-product', $produkTerbaru, 'item')
                 </div>
                 <div class="text-center">
-                    <a href="" class="btn btn-outline-primary">Lihat produk lainnya</a>
+                <a href="{{ route('shop.index') }}" class="btn btn-outline-primary">Lihat produk lainnya</a>
                 </div>
             </div>
             

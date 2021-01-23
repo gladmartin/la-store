@@ -39,6 +39,9 @@ class SettingController extends Controller
         }
 
         foreach ($request->options as $key => $option) {
+            if ($key == 'site_default_color') {
+                $siteDefaultColorLow = adjustBrightness($option, 0.8);
+            }
             Option::updateOrCreate(
                 [
                     'name' => $key,
@@ -50,5 +53,10 @@ class SettingController extends Controller
         }
 
         return redirect()->back()->with('info', 'Settingan berhasil diperbarui');
+    }
+
+    public function footer()
+    {
+        return view('admin.setting.footer.index');
     }
 }

@@ -9,7 +9,7 @@ use PharIo\Manifest\Url;
 
 class ScrapeMarketPlace {
 
-    static public function product($url)
+    static public function product($url, $persen = 0, $tambah = 0)
     {
         $result = null;
         $host = parse_url($url, PHP_URL_HOST);
@@ -23,7 +23,7 @@ class ScrapeMarketPlace {
         
         if (!$result) throw new MarketPlaceException('Marketplace tidak disupport');
        
-        return $result->singleProduct();
+        return $result->singleProduct($persen, $tambah);
     }
 
     static public function products($url)

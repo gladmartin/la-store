@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataTableController;
 use App\Http\Controllers\Admin\DeliveryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ScrapeMarketPlaceController;
 use App\Http\Controllers\Admin\SettingController;
@@ -29,6 +30,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [SiteController::class, 'index'])->name('site.home');
+Route::get('/p/{slug}.{postId}', [ProductController::class, 'single'])->name('post.single');
 Route::get('/{slug}.{productId}', [ProductController::class, 'single'])->name('product.single');
 Route::get('/c/{slug}.{categoryId}', [CategoryController::class, 'single'])->name('category.single');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -53,6 +55,8 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
         Route::get('/product',[DataTableController::class, 'products'])->name('dt.product');
         Route::get('/order/{status?}',[DataTableController::class, 'order'])->name('dt.order');
         Route::get('/delivery',[DataTableController::class, 'delivery'])->name('dt.delivery');
+        Route::get('/post',[DataTableController::class, 'posts'])->name('dt.post');
+        Route::get('/footer',[DataTableController::class, 'footer'])->name('dt.footer');
     });
     Route::resource('product', AdminProductController::class);
     
@@ -78,6 +82,12 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
     // setting web
     Route::get('setting/web', [SettingController::class, 'web'])->name('setting.web');
     Route::post('setting/web/store', [SettingController::class, 'store'])->name('setting.web.store');
+    Route::get('setting/footer', [SettingController::class, 'footer'])->name('setting.footer');
+    Route::get('setting/footer/{post}/edit', [SettingController::class, 'editFooter'])->name('setting.footer.edit');
+    
+
+    // posts 
+    Route::resource('/post', PostController::class);
     
 
 });

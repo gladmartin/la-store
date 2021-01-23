@@ -18,7 +18,7 @@ class ScrapeMarketPlaceController extends Controller
 
     public function single(SingleProductRequest $request)
     {
-        $product = ScrapeMarketPlace::product($request->url);
+        $product = ScrapeMarketPlace::product($request->url, $request->persen, $request->tambah);
         
         return response()->json([
             'success' => true,

@@ -16,9 +16,8 @@ class Shopee
         $this->url = $url;
     }
 
-    public function singleProduct()
+    public function singleProduct($persen = 0, $tambah = 0)
     {
-
         if (strpos($this->url, 'https://shopee.co.id/api/v2/item/get?itemid=') !== false) {
             $urlApi = $this->url;
         } else {
@@ -58,6 +57,12 @@ class Shopee
                 ];
             }
         }
+        $price = $result->price / 100000;
+        if ($persen > 0) {
+            $priceUp = $price * $persen / 100;
+            $price = $price + $priceUp;
+        }
+        $price = $price + $tambah;
 
         $returnData = [
             'name' => $result->name,
@@ -67,7 +72,7 @@ class Shopee
             'description' => $result->description,
             'stock' => $result->stock,
             'weight' => $result->weight ?? 0,
-            'price' => $result->price / 100000,
+            'price' => $price,
             'variants' => $variants,
         ];
 

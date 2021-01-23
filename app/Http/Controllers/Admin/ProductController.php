@@ -62,12 +62,13 @@ class ProductController extends Controller
             ]);
             $category = $category->id;
         }
+        $deskripsi = str_replace(['Tokopedia','Shopee', 'tokped', 'tokopedia', 'shopee'], '', $request->deskripsi);
         $product = Product::create([
             'user_id' => $request->user()->id,
             'category_id' => $category,
             'title' => $request->produk,
             'slug' => Str::slug($request->produk),
-            'deskripsi' => $request->deskripsi,
+            'deskripsi' => $deskripsi,
             'stok' => $request->stok,
             'harga' => $request->harga,
             'diskon' => $request->diskon,

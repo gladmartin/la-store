@@ -31,7 +31,8 @@
     <style>
         :root {
             --main-color: {{$webOption->get('site_default_color')}};
-            --main-color-low: {{$webOption->get('site_default_color')}};
+            --main-color-low: {{adjustBrightness($webOption->get('site_default_color'), 0.8)}};
+            --main-color-darker: {{adjustBrightness($webOption->get('site_default_color'), -0.3)}};
             /* --main-color-low: rgba(255, 146, 99, 0.301); */
         }
         body {
@@ -118,10 +119,10 @@
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Cari produk apa.."
+                            <input type="text" class="form-control border-0" style="outline: none !important" placeholder="Cari produk apa.."
                                 aria-label="Cari produk apa.." aria-describedby="button-addon2">
                             <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                                <button class="btn btn-primary-darker" type="button" id="button-addon2">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -136,15 +137,15 @@
                 <div class="text-center">
                     <a class="navbar-brand text-white font-weight-bold text-center" href="{{ url('/') }}">
                         {{-- {{ config('app.name', 'Laravel') }} --}}
-                    <img src="{{ asset('img/logo-store.png') }}" alt="LaStore" width="130px">
+                    <img data-placeholder-background="lightgrey" data-src="{{ asset('img/logo-store.png') }}" alt="LaStore" width="130px">
                     </a>
                 </div>
                 <form method="get" class="form-search" action="/shop">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Cari produk apa.."
-                            aria-label="Cari produk apa.." aria-describedby="button-addon2" name="q">
+                        <input type="text" class="form-control border-0" placeholder="Cari produk apa.."
+                            aria-label="Cari produk apa.." autocomplete="off" aria-describedby="button-addon2" name="q">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">
+                            <button class="btn btn-primary" type="button" id="button-addon2">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
@@ -159,28 +160,13 @@
         <footer>
             <div class="main-footer border-top">
                 <div class="container">
-                    <div class="row">
+                    <div class="row justify-content-center">
+                        @foreach (footerWidget() as $item)
                         <div class="col-lg-4 mb-4 col-6">
-                            <h5 class="font-weight-bolder">Tentang kami</h5>
-                            <div class="link-footer">
-                                <a href="" class="d-block">Toko kami</a>
-                                <a href="" class="d-block">Kontak</a>
-                            </div>
+                            <h5 class="font-weight-bolder">{{ $item->title }}</h5>
+                            {!! $item->content !!}
                         </div>
-                        <div class="col-lg-4 mb-4 col-6">
-                            <h5 class="font-weight-bolder">Customer support</h5>
-                            <div class="link-footer">
-                                <a href="" class="d-block">Toko kami</a>
-                                <a href="" class="d-block">Kontak</a>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 mb-4 col-12 center-mobile">
-                            <h5 class="p-0 m-0 font-weight-bolder">Metode pembayaran</h5>
-                            <div class="peyment-box">
-                                <img src="https://317927-1222945-1-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2020/05/Partner-LogoArtboard-1-copy-1-1024x488.png"
-                                    alt="" width="100%" class="rounded">
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -224,6 +210,7 @@
     <script src="{{ asset('js/popper.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('js/snackbarlight.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
     <script>
         const BASE_URL = '{{ url("/") }}';
         const BASE_URL_API = '{{ url("api") }}';
@@ -242,6 +229,9 @@
                 $('.nav-bottom-warapper').html(htmlNavBottom)
             }
         });
+        const el = document.querySelectorAll('img');
+        const observer = lozad(el); // passing a `NodeList` (e.g. `document.querySelectorAll()`) is also valid
+        observer.observe();
     </script>
      @if (session('info'))
      <script>
