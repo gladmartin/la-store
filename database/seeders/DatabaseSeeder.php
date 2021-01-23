@@ -32,6 +32,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             CourierSeeder::class,
             LocationSeeder::class,
+            OptionSeeder::class,
+            PostSeeder::class,
         ]);
     }
 }
