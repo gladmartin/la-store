@@ -33,7 +33,10 @@
                 <b>Menampilkan {{ $category->name }}</b>
                 <hr>
                 <div class="row">
-                    @each('components.card-item-product', $category->products()->get(), 'item', 'components.card-product-empty')
+                    @each('components.card-item-product', $products, 'item', 'components.card-product-empty')
+                </div>
+                <div class="row justify-content-center">
+                    {{ $products->links() }}
                 </div>
             </div>
         </div>

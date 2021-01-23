@@ -38,13 +38,13 @@
                 <td>
                     {{ $order->product->title ?? 'PRODUK TELAH DIHAPUS' }}
                     <div>
-                        Total pesanan
+                        Kuantitas : <b>{{ $order->kuantitas }}</b>
                     </div>
                     <div>
-                        Varian
+                        Varian : <b>{{ $order->varian }}</b>
                     </div>
                     <div>
-                        Total bayar
+                        Total bayar : <b>{{ rupiah($order->delivery->ongkos_kirim + $order->bayar) }}</b>
                     </div>
                 </td>
             </tr>

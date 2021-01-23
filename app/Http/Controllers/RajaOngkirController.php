@@ -48,8 +48,14 @@ class RajaOngkirController extends Controller
             ], 402);
         }
 
-        $rawResponse = Http::get("https://api.pvita.babaturan.net/kecamatan/{$request->city_id}");
-        $result = $rawResponse->json();
+        // $rawResponse = Http::get("https://api.pvita.babaturan.net/kecamatan/{$request->city_id}");
+        $rawResponse = Http::get('https://pro.rajaongkir.com/api/subdistrict', [
+            'city' => $request->city_id,
+            'key' => config('rajaongkir.api_key'),
+        ]);
+
+        $result = $rawResponse->json('rajaongkir.results');
+        
         if (!$result || empty($result)) {
             return response()->json([
                 'success' => false,
@@ -74,9 +80,19 @@ class RajaOngkirController extends Controller
             'berat' => $request->berat == 0 ? 1 : $request->berat,
             'kurir' => 'jne,tiki,pos',
         ]);
+        // $raw = Http::post('https://pro.rajaongkir.com/api/cost', [
+        //     'origin' => $kecamatanToko,
+        //     'originType' => 'subdistrict',
+        //     'destination' => $request->ke,
+        //     'destinationType' => 'subdistrict',
+        //     'weight' => $request->berat == 0 ? 1 : $request->berat,
+        //     'courier' => 'jne',
+        //     'key' => config('rajaongkir.api_key')
+        // ]);
 
         $result = $raw->json();
-
+        // $result = $raw->json('rajaongkir.results');
+        // dd($result);
         $ongkir = [];
         foreach ($result as $res) {
             if ($res == null) continue;

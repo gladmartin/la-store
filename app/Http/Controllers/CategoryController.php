@@ -10,8 +10,8 @@ class CategoryController extends Controller
     public function single(string $slugCategory, int $categoryId)
     {
         $category = Category::where('slug', $slugCategory)->findOrFail($categoryId);
+        $products = $category->products()->paginate(20);
         
-        
-        return view('site.category.single', compact('category'));
+        return view('site.category.single', compact('category', 'products'));
     }
 }

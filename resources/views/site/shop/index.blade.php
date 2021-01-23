@@ -29,29 +29,26 @@
                 <form action="" method="get">
                     <div class="form-group">
                         <label for="kategori">Kategori</label>
-                        <select name="kategori" id="kategori" class="form-control">
-                            <option>Semua kategori</option>
+                        <select name="category" id="kategori" class="form-control">
+                            <option value="">Semua kategori</option>
                             @foreach ($categories as $item)
-                                <option {{ $item->id }}>{{ $item->name }}</option>
+                                <option value="{{ $item->id }}" {{ request()->category == $item->id ? 'selected' : '' }} >{{ $item->name }}</option>
                             @endforeach
                         </select>
                     </div>
+                    
                     <div class="form-group">
                         <label for="range-harga">Batasan harga</label>
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" placeholder="Rp Min" name="harga[minimal]" class="form-control">
-                            </div>
-                            <div class="col">
-                                <input type="text" placeholder="Rp Maks" name="harga[maksimal]" class="form-control">
-                            </div>
+                        <div class="input-group mb-3">
+                            <input type="number" class="form-control" name="price_min" value="{{ request()->price_min }}" placeholder="Rp min" id="price_min">
+                            <input type="number" class="form-control" name="price_max" value="{{ request()->price_max }}" placeholder="Rp max" id="price_min">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="urutkan">Urutkan harga</label>
-                        <select name="urutkan" id="urutkan" class="form-control">
-                            <option value="1">Harga rendah ke tinggi</option>
-                            <option value="2">Harga tinggi ke rendah</option>
+                        <select name="price_order" id="urutkan" class="form-control">
+                            <option {{ request()->price_order == 'low_first' ? 'selected' : '' }} value="low_first">Harga rendah ke tinggi</option>
+                            <option {{ request()->price_order == 'high_first' ? 'selected' : '' }} value="high_first">Harga tinggi ke rendah</option>
                         </select>
                     </div>
                     <button class="btn btn-primary btn-block">Terapkan</button>
@@ -62,6 +59,12 @@
             <div class="shadow-sm bg-white p-4 rounded">
                 <h5>Daftar produk</h5>
                 <hr>
+                <div class="row">
+                    @each('components.card-item-product', $products, 'item', 'components.card-product-empty')
+                </div>
+                <div class="row justify-content-center">
+                    {{ $products->appends($_GET)->links() }}
+                </div>
             </div>
         </div>
     </div>

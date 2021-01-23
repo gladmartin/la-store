@@ -30,4 +30,18 @@ class Order extends Model
     {
         return (strpos($image, 'http') === false) ? asset('storage/post/' . $image) : $image;
     }
+
+    public function getVarianAttribute()
+    {
+        $variants = $this->variants;
+        $variants = json_decode($variants);
+        if (!$variants) return '-';
+        $return = '';
+        foreach ($variants as $item) {
+            $return .= '(' . $item->key .' ' . $item->value . ')';
+        }
+
+        return $return;
+
+    }
 }

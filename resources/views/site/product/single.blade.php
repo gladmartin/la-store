@@ -96,7 +96,9 @@
                         <div class="col-12">
                             <h5>Deskripsi</h5>
                             <hr>
-                            <div class="deskripsi">{!! $product->deskripsi !!}</div>
+                            <div class="deskripsi less">{!! substr($product->deskripsi, 0, 100) !!}</div>
+                            <div class="deskripsi complete" style="display: none">{!! $product->deskripsi !!}</div>
+                            <a href="#!" class="more btn-link font-weight-bold text-small" style="font-size: 11px">Lihat selengkapnya.</a>
                         </div>
                     </div>
                 </div>
@@ -644,6 +646,18 @@
         $('.message-order').html(html);
     }
 
+    $(".more").on('click', function(e) {
+        e.preventDefault();
+        if ($(this).html() == 'Lihat selengkapnya.') {
+            $('.deskripsi').hide();
+            $('.deskripsi.complete').show();
+            $(this).html('Lihat lebih sedikit.')
+        } else {
+            $('.deskripsi').show();
+            $('.deskripsi.complete').hide();
+            $(this).html('Lihat selengkapnya.');
+        }
+    })
 
 </script>
 @endpush

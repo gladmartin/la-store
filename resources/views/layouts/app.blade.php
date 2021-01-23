@@ -119,7 +119,7 @@
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
                         <div class="input-group">
-                            <input type="text" class="form-control border-0" style="outline: none !important" placeholder="Cari produk apa.."
+                        <input name="q" value="{{ request()->q }}" type="text" class="form-control border-0" style="outline: none !important" placeholder="Cari produk apa.."
                                 aria-label="Cari produk apa.." aria-describedby="button-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary-darker" type="button" id="button-addon2">
@@ -137,13 +137,13 @@
                 <div class="text-center">
                     <a class="navbar-brand text-white font-weight-bold text-center" href="{{ url('/') }}">
                         {{-- {{ config('app.name', 'Laravel') }} --}}
-                    <img data-placeholder-background="lightgrey" data-src="{{ asset('img/logo-store.png') }}" alt="LaStore" width="130px">
+                    <img data-src="{{ asset('img/logo-store.png') }}" alt="LaStore" width="130px">
                     </a>
                 </div>
                 <form method="get" class="form-search" action="/shop">
                     <div class="input-group">
                         <input type="text" class="form-control border-0" placeholder="Cari produk apa.."
-                            aria-label="Cari produk apa.." autocomplete="off" aria-describedby="button-addon2" name="q">
+                            aria-label="Cari produk apa.." autocomplete="off" aria-describedby="button-addon2" name="q" value="{{ request()->q }}">
                         <div class="input-group-append">
                             <button class="btn btn-primary" type="button" id="button-addon2">
                                 <i class="fa fa-search"></i>

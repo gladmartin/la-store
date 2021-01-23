@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Product\ProductStoreRequest;
+use App\Http\Requests\Admin\Product\ProductUpdateRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -56,13 +57,13 @@ class ProductController extends Controller
         if ($request->url_sumber) {
             $category = Category::firstOrCreate([
                 'slug' => Str::slug($request->kategori),
-            ],[
+            ], [
                 'name' => $request->kategori,
                 'user_id' => $request->user()->id,
             ]);
             $category = $category->id;
         }
-        $deskripsi = str_replace(['Tokopedia','Shopee', 'tokped', 'tokopedia', 'shopee'], '', $request->deskripsi);
+        $deskripsi = str_replace(['Tokopedia', 'Shopee', 'tokped', 'tokopedia', 'shopee'], '', $request->deskripsi);
         $product = Product::create([
             'user_id' => $request->user()->id,
             'category_id' => $category,
@@ -112,7 +113,9 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $categories = Category::all();
+
+        return view('admin.product.edit', compact('product', 'categories'));
     }
 
     /**
@@ -122,9 +125,58 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductUpdateRequest $request, Product $product)
     {
-        //
+        $thumbnailUploaded = $request->thumbnail;
+        $imagesUploaded = null;
+        if ($request->galeri) {
+            $imagesUploaded = explode('|', $request->galeri);
+        }
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail = $request->file('thumbnail');
+            $thumbnailUploaded = Storage::put('public/product', $thumbnail);
+            $thumbnailUploaded = basename($thumbnailUploaded);
+        }
+        $category = $request->kategori;
+        if ($request->url_sumber) {
+            $category = Category::firstOrCreate([
+                'slug' => Str::slug($request->kategori),
+            ], [
+                'name' => $request->kategori,
+                'user_id' => $request->user()->id,
+            ]);
+            $category = $category->id;
+        }
+        $deskripsi = str_replace(['Tokopedia', 'Shopee', 'tokped', 'tokopedia', 'shopee'], '', $request->deskripsi);
+        $product->update([
+            'user_id' => $request->user()->id,
+            'category_id' => $category,
+            'title' => $request->produk,
+            'slug' => Str::slug($request->produk),
+            'deskripsi' => $deskripsi,
+            'stok' => $request->stok,
+            'harga' => $request->harga,
+            'diskon' => $request->diskon,
+            'berat' => $request->berat,
+            'kondisi' => $request->kondisi,
+            'image' => $thumbnailUploaded,
+            'images' => json_encode($imagesUploaded),
+            'url_sumber' => $request->url_sumber,
+        ]);
+        $variants = null;
+        foreach ($request->varian as $key => $value) {
+            if ($value['key'] || $value['value'] || $value['stok']) {
+                $variants[$key] = $value;
+                $variants[$key]['product_id'] = $product->id;
+            }
+        }
+
+        if ($variants) {
+            $product->variants()->delete();
+            $product->variants()->insert($variants);
+        }
+
+        return redirect()->back()->with('info', 'Produk berhasil diubah');
     }
 
     /**
