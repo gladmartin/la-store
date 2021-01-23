@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->text('slug');
             $table->text('deskripsi');
             $table->unsignedBigInteger('stok');
-            $table->unsignedBigInteger('harga', 100);
+            $table->unsignedBigInteger('harga');
             $table->string('diskon', 100)->nullable();
             $table->string('image')->nullable();
             $table->json('images')->nullable();
