@@ -21,22 +21,25 @@ class PostSeeder extends Seeder
             'slug' => Str::slug('Tentang kami'),
             'content' => '<a href="" class="d-block">Toko kami</a>',
             'type' => 'widget_footer',
+            'user_id' => 1,
         ]);
 
         Post::updateOrCreate([
-            'title' => 'Customer Support',
+            'title' => 'Customer support',
         ], [
             'slug' => Str::slug('Tentang kami'),
             'content' => '<a href="" class="d-block">Toko kami</a>',
             'type' => 'widget_footer',
+            'user_id' => 1,
         ]);
 
         Post::updateOrCreate([
-            'title' => 'Tentang kami',
+            'title' => 'Metode pembayaran',
         ], [
             'slug' => Str::slug('Tentang kami'),
             'content' => '<img src="https://317927-1222945-1-raikfcquaxqncofqfm.stackpathdns.com/wp-content/uploads/2020/05/Partner-LogoArtboard-1-copy-1-1024x488.png" alt="" width="100%" class="rounded">',
             'type' => 'widget_footer',
+            'user_id' => 1,
         ]);
     }
 }

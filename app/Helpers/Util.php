@@ -86,8 +86,10 @@ function footerWidget()
 
 
 function adjustBrightness($hexCode, $adjustPercent) {
+    if (strpos('#', $hexCode) === false) return $hexCode;
     $hexCode = ltrim($hexCode, '#');
 
+    
     if (strlen($hexCode) == 3) {
         $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
     }
