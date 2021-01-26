@@ -54,7 +54,7 @@ class OrderCreated implements ShouldQueue
         $teks .= "Berikut adalah detail orderan kamu\n";
         $teks .= "No Invoice: *" . $this->order->invoice ."*\n";
         $teks .= "Total tagihan: *Rp " . $totalTagihan ."*\n\n";
-        $teks .= "Segera lakukan pembayaran ke salah nomor rekening berikut:\n\n";
+        $teks .= "Segera lakukan pembayaran ke salah satu nomor rekening berikut:\n\n";
         $teks .= $listBank . "\n";
         $teks .= "Jika sudah melakukan pembayaran silahkan lakukan konfirmasi di " . route('order.konfirmasi', ['invoice=' . $this->order->invoice]) . "\n\n";
         $teks .= "Untuk melihat detail orderan anda kunjungi link berikut " . route('order.sukses', $this->order->invoice);
