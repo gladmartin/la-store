@@ -41,8 +41,8 @@ class OrderKonfirmasi implements ShouldQueue
         $totalTagihan =  number_format($this->order->delivery->ongkos_kirim + $this->order->bayar, 0, ',', '.');
         $teks = "*[$namaToko]*\n\n";
         $teks .= "Halo Kak *" . $this->order->nama . "*\n";
-        $teks .= "Pesanan dengan no. invoice *{$this->order->invoice}* sudah kami konfrimasi dan akan segera dikirim 🤩\n";
-        $teks .= "Mohon tunggu informasi selanjuntya ya.\n\n";
+        $teks .= "Pesanan dengan No. invoice *{$this->order->invoice}* sudah kami konfirmasi dan akan segera dikirim 🤩\n";
+        $teks .= "Mohon tunggu informasi selanjutnya ya.\n\n";
         $teks .= "*Terimakasih*";
         $result = $wablas->sendMessage($teks);
     }
