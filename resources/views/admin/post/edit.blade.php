@@ -54,7 +54,7 @@
                     </div>
                 </div>
 
-                <button class="btn btn-primary shadow-sm btn-sm" type="submit">Proses tambah</button>
+                <button class="btn btn-primary shadow-sm btn-sm" type="submit">Proses ubah</button>
 
             </form>
         </div>

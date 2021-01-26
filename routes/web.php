@@ -5,12 +5,13 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataTableController;
 use App\Http\Controllers\Admin\DeliveryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
-use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ScrapeMarketPlaceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SiteController;
@@ -30,7 +31,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [SiteController::class, 'index'])->name('site.home');
-Route::get('/p/{slug}.{postId}', [ProductController::class, 'single'])->name('post.single');
+Route::get('/p/{slug}.{postId}', [PostController::class, 'single'])->name('post.single');
 Route::get('/{slug}.{productId}', [ProductController::class, 'single'])->name('product.single');
 Route::get('/c/{slug}.{categoryId}', [CategoryController::class, 'single'])->name('category.single');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -91,7 +92,7 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
     
 
     // posts 
-    Route::resource('/post', PostController::class);
+    Route::resource('/post', AdminPostController::class);
     
 
 });
