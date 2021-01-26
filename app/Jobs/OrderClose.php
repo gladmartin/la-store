@@ -41,8 +41,8 @@ class OrderClose implements ShouldQueue
         $totalTagihan =  number_format($this->order->delivery->ongkos_kirim + $this->order->bayar, 0, ',', '.');
         $teks = "*[$namaToko]*\n\n";
         $teks .= "Halo Kak *" . $this->order->nama . "*\n";
-        $teks .= "Terimkasih telah berbelanja ditoko kami, pesanan dengan no.invoice {$this->order->invoice} telah sampai\n\n";
-        $teks .= "Ditunggu pesanan selanjutya ya.. ☺️\n";
+        $teks .= "Terimkasih telah berbelanja ditoko kami, pesanan dengan no. invoice *{$this->order->invoice}* telah sampai ya.\n\n";
+        $teks .= "Ditunggu pesanan selanjutya.. ☺️\n";
         $teks .= "*Terimakasih*";
         $result = $wablas->sendMessage($teks);
     }

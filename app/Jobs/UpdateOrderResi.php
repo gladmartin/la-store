@@ -37,10 +37,10 @@ class UpdateOrderResi implements ShouldQueue
         $wablas->addRecipient($this->deliveryDetail->delivery->order->no_wa);
         $namaToko = config('app.name');
         $teks = "*[$namaToko]*\n\n";
-        $teks .= "Halo Kak *" . $this->deliveryDetail->delivery->order->nama . "*\n\n";
+        $teks .= "Halo Kak *" . $this->deliveryDetail->delivery->order->nama . "*\n";
         $teks .= "Berikut informasi update resi pesanan no invoice. *{$this->deliveryDetail->delivery->order->invoice}*\n\n";
         $teks .= "[{$this->deliveryDetail->created_at}] - {$this->deliveryDetail->keterangan}\n\n";
-        $teks .= "Untuk melacak pesanan kamu secara detail bisa kunjungi ke sini " . route('order.lacak', 'invoice=' . $this->deliveryDetail->delivery->order->invoice);
+        $teks .= "Untuk melacak pesanan kamu secara detail, bisa kunjungi ke link ini ya " . route('order.lacak', 'invoice=' . $this->deliveryDetail->delivery->order->invoice);
         $teks .= "\n\n*Terimakasih*";
         $result = $wablas->sendMessage($teks);
     }
