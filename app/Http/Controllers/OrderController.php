@@ -5,13 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Order\MakeOrder;
 use App\Http\Requests\Order\StoreKonfirmasiBayar;
 use App\Jobs\OrderCreated;
+use App\Models\City;
 use App\Models\Delivery;
 use App\Models\Meta;
 use App\Models\Order;
 use App\Models\Post;
 use App\Models\Product;
+use App\Models\Province;
 use App\Models\Variant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -25,6 +28,21 @@ class OrderController extends Controller
                 'message' => 'Kuantitas tidak cukup, stok tersedia ' . $request->stok,
             ], 402);
         }
+
+        $rajaongkir = Http::get('https://pro.rajaongkir.com/api/subdistrict', [
+            'key' => config('rajaongkir.api_key'),
+            'city' => $request->kota,
+            'id' => $request->kecamatan,
+        ]);
+        $rajaongkir = (object) $rajaongkir->json('rajaongkir.results');
+
+        if (empty($rajaongkir)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Data kecamatan tidak ditemukan!',
+            ], 402);
+        }
+
         $bayar = $product->harga * $request->kuantitas;
         $variants = null;
         if ($request->variants) {
@@ -37,7 +55,8 @@ class OrderController extends Controller
                 }
             }
         }
-        $alamat = 'Alamat lengkap ' . $request->alamat;
+
+        $alamat = "Provinsi {$rajaongkir->province}, Kota/Kabupaten {$rajaongkir->city}, Kecamatan {$rajaongkir->subdistrict_name}. Alamat lengkap " . $request->alamat;
         $order = Order::create([
             'invoice' => $invoice,
             'product_id' => $request->product_id,
@@ -50,6 +69,21 @@ class OrderController extends Controller
             'bayar' => $bayar,
             'status_order' => 'PENDING',
             'status_pembayaran' => 'BELUM DIBAYAR',
+        ]);
+
+        $order->metas()->create([
+            'key' => 'kecamatan',
+            'value' => $request->kecamatan
+        ]);
+
+        $order->metas()->create([
+            'key' => 'provinsi',
+            'value' => $request->provinsi
+        ]);
+
+        $order->metas()->create([
+            'key' => 'provinsi',
+            'value' => $request->provinsi
         ]);
 
         // create deleivery
@@ -85,7 +119,7 @@ class OrderController extends Controller
         if (!$order) {
             return redirect()->back()->with('info', 'No invoice yang kamu masukkan tidak ditemukan')->withInput();
         }
-        
+
         if ($order->status_order == 'SEDANG DIKIRIM') {
             return redirect()->back()->with('info', 'Orderan anda sedang dalam perjalanan!')->withInput();
         }

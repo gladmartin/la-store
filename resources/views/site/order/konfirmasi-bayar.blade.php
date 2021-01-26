@@ -125,7 +125,7 @@
                                                 $bank = $item->metas->where('key', 'bank')->first()->value;
                                                 $noRek = $item->metas->where('key', 'no_rek')->first()->value;
                                                 $atasNama = $item->metas->where('key', 'atas_nama')->first()->value;
-                                                $rakit = $bank . ' - ' . $noRek . ' Atas nama ' . $atasNama;
+                                                $rakit = $bank . ' - ' . $noRek . ' a.n ' . $atasNama;
                                             @endphp
                                             <option {{ old('bank_tujuan') == $rakit ? 'selected' : '' }} >{{ $rakit }}</option>
                                             @endforeach

@@ -52,6 +52,16 @@
                 <td>Alamat pengataran</td>
                 <td>{{ $order->alamat }}</td>
             </tr>
+            @if ($order->konfirmasiPembayaran)
+            <tr>
+                <td><span class="badge badge-info">Konfirmasi pembayaran</span></td>
+                <td>
+                    <div class="alert alert-info">
+                        Rekening pengirim Bank {{ $order->konfirmasiPembayaran->bank_pengirim }} a.n {{ $order->konfirmasiPembayaran->nama_pengirim }} <br> di transfer ke Rekening {{ $order->konfirmasiPembayaran->bank_tujuan  }}
+                    </div>
+                </td>
+            </tr>
+            @endif
         </table>
     <a href="{{ url()->previous() }}" class="btn btn-primary btn-sm shadow-sm">Kembali</a>
     </div>

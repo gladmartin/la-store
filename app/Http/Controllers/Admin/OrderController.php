@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\OrderClose;
 use App\Jobs\OrderKonfirmasi;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -103,6 +104,8 @@ class OrderController extends Controller
         $order->status_order = 'ORDER TERKIRIM';
         $order->status_pembayaran = 'LUNAS';
         $order->save();
+
+        OrderClose::dispatch($order);
 
         return redirect()->back()->with('info', 'Orderan telah terkirim!');
     }

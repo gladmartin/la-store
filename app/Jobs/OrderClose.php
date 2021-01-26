@@ -11,7 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class OrderKonfirmasi implements ShouldQueue
+class OrderClose implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -41,8 +41,8 @@ class OrderKonfirmasi implements ShouldQueue
         $totalTagihan =  number_format($this->order->delivery->ongkos_kirim + $this->order->bayar, 0, ',', '.');
         $teks = "*[$namaToko]*\n\n";
         $teks .= "Halo Kak *" . $this->order->nama . "*\n";
-        $teks .= "Pesanan dengan no. invoice {$this->order->invoice} sudah kami konfrimasi dan akan segera dikirim 🤩\n\n";
-        $teks .= "Mohon tunggu informasi selanjuntya ya.\n";
+        $teks .= "Terimkasih telah berbelanja ditoko kami, pesanan dengan no.invoice {$this->order->invoice} telah sampai\n\n";
+        $teks .= "Ditunggu pesanan selanjutya ya.. ☺️\n";
         $teks .= "*Terimakasih*";
         $result = $wablas->sendMessage($teks);
     }

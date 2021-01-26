@@ -38,10 +38,19 @@ class Order extends Model
         if (!$variants) return '-';
         $return = '';
         foreach ($variants as $item) {
-            $return .= '(' . $item->key .' ' . $item->value . ')';
+            $return .= $item->key . ' = ' . $item->value . ', ';
         }
 
         return $return;
 
+    }
+
+    public function getKonfirmasiPembayaranAttribute()
+    {
+        $konfirmasi = $this->metas->where('key', 'user_konfirmasi_order')->first();
+        if (!$konfirmasi) return null;
+        $konfirmasi = json_decode($konfirmasi->value);
+
+        return $konfirmasi;
     }
 }
