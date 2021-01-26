@@ -47,7 +47,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fa fa-user"></i></span>
                                 </div>
-                                <input required type="text" class="form-control" name="invoice"
+                                <input required  value="{{ old('invoice', request()->invoice) }}"  type="text" class="form-control" name="invoice"
                                     placeholder="Ketikkan nomor invoice" aria-label="Ketikkan nomor invoice"
                                     aria-describedby="invoice" id="invoice">
                             </div>
@@ -88,6 +88,12 @@
         btnSubmit.removeAttr('disabled');
         btnSubmit.html('Lacak')
     })
+
+    let inv = $('#invoice').val();
+    if (inv) {
+        $('.form-lacak').submit();
+    }
+
     async function searchLacak(invoice) {
         let raw = await fetch(`${BASE_URL_API}/lacak-order/${invoice}`, {
             headers: {

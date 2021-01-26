@@ -53,7 +53,7 @@
                                         <input required type="text"
                                             class="form-control @error('invoice') is-invalid @enderror" name="invoice"
                                             placeholder="Ketikkan nomor invoice" aria-label="Ketikkan nomor invoice"
-                                            value="{{ old('invoice') }}" aria-describedby="invoice" id="invoice">
+                                            value="{{ old('invoice', request()->invoice) }}" aria-describedby="invoice" id="invoice">
                                         @error('invoice')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
@@ -120,8 +120,15 @@
                                         <select required name="bank_tujuan" id="bank_tujuan"
                                             class="form-control @error('bank_tujuan') is-invalid @enderror">
                                             <option disabled selected>Bank tujuan</option>
-                                            <option>BRI</option>
-                                            <option>BCA</option>
+                                            @foreach ($banks as $item)
+                                            @php
+                                                $bank = $item->metas->where('key', 'bank')->first()->value;
+                                                $noRek = $item->metas->where('key', 'no_rek')->first()->value;
+                                                $atasNama = $item->metas->where('key', 'atas_nama')->first()->value;
+                                                $rakit = $bank . ' - ' . $noRek . ' Atas nama ' . $atasNama;
+                                            @endphp
+                                            <option {{ old('bank_tujuan') == $rakit ? 'selected' : '' }} >{{ $rakit }}</option>
+                                            @endforeach
                                         </select>
                                         @error('bank_tujuan')
                                         <span class="invalid-feedback" role="alert">

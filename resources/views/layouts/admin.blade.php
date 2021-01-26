@@ -96,6 +96,7 @@
                     data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="{{ route('setting.web') }}">Umum</a>
+                        <a class="collapse-item" href="{{ route('setting.bank') }}">Akun Bank</a>
                         <a class="collapse-item" href="{{ route('setting.footer') }}">Widget footer</a>
                     </div>
                 </div>

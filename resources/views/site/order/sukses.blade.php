@@ -98,28 +98,35 @@
                     <span class="font-weight-bold"> {{ $order->created_at->addHours(24)->format('H:i') }} WIB</span></p>
 
                 <div class="row justify-content-center mt-5 list-bank" style="width: 100%;">
+                    @foreach ($banks as $item)
+                    @php
+                        $bank = $item->metas->where('key', 'bank')->first()->value;
+                        $noRek = $item->metas->where('key', 'no_rek')->first()->value;
+                        $atasNama = $item->metas->where('key', 'atas_nama')->first()->value;
+                        $rakit = $bank . ' - ' . $noRek . ' Atas nama ' . $atasNama;
+                    @endphp
                     <div class="col-sm-6 col-lg-3">
                         <div class="wrapper-bank bg-white" align="center">
                             <div class="wrapper-image bank-logo">
-                                <img width="100"
-                                    src="https://s3-ap-southeast-1.amazonaws.com/iwzl/iwzl-new/bank/051017100524_Untitled-1.png"
-                                    alt="BRI">
+                                <img width="100" src="{{ image($item->image) }}" alt="{{ $bank }}">
                             </div>
-                            <p class="mb-0 font-weight-bold ">GLAD MARTIN SILALAHI</p>
+                            <p class="mb-0 font-weight-bold ">{{ $atasNama }}</p>
                             <input style="width:100%;border:none"
-                                class="text-center mb-0 font-weight-light h5 text-734601009258532"
-                                value="734601009258532" readonly="">
+                                class="text-center mb-0 font-weight-light h5 text-{{ $noRek }}"
+                                value="{{ $noRek }}" readonly="">
                             <button type="button" class="btn btn-sm py-1 btn-default"
-                                onclick="toClip('.text-734601009258532','')">Salin/Copy</button>
+                                onclick="toClip('.text-{{ $noRek }}','')">Salin/Copy</button>
                         </div>
                     </div>
+                    
+                    @endforeach
                 </div>
                 <div class="text-center mt-3">
                     <p>Harap transfer sesuai dengan nominal <b>"TOTAL" </b> ke salah satu bank diatas!</p> <br>
                     <p class="mb-0">Setelah transfer , Segera <b>Konfirmasi Pembayaran. </b> Perbedaan nilai transfer akan menghambat proses verifikasi!</p>
                     <div class="col-12">
                         <a class="btn btn-lg btn-primary btn-konfirmasi mb-3"
-                            href="{{ route('order.konfirmasi') }}">Konfirmasi Pembayaran</a>
+                            href="{{ route('order.konfirmasi', 'invoice=' . $order->invoice) }}">Konfirmasi Pembayaran</a>
                     </div>
 
                     <br>

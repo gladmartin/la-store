@@ -117,7 +117,7 @@
                         @endguest
 
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
+                <form class="form-inline my-2 my-lg-0" action="{{ route('shop.index') }}" method="get">
                         <div class="input-group">
                         <input name="q" value="{{ request()->q }}" type="text" class="form-control border-0" style="outline: none !important" placeholder="Cari produk apa.."
                                 aria-label="Cari produk apa.." aria-describedby="button-addon2">
@@ -140,7 +140,7 @@
                     <img data-src="{{ asset('img/logo-store.png') }}" alt="LaStore" width="130px">
                     </a>
                 </div>
-                <form method="get" class="form-search" action="/shop">
+            <form method="get" class="form-search" action="{{ route('shop.index') }}">
                     <div class="input-group">
                         <input type="text" class="form-control border-0" placeholder="Cari produk apa.."
                             aria-label="Cari produk apa.." autocomplete="off" aria-describedby="button-addon2" name="q" value="{{ request()->q }}">

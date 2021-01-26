@@ -12,4 +12,9 @@ class DeliveryDetail extends Model
     protected $guarded = [];
 
     protected $table = 'deliveries_details';
+
+    public function delivery()
+    {
+        return $this->belongsTo(Delivery::class);
+    }
 }

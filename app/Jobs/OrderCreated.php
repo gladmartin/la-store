@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Lib\Wablas\WablasClient;
 use App\Models\Order;
+use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,16 +40,25 @@ class OrderCreated implements ShouldQueue
         $wablas->addRecipient($this->order->no_wa);
         $namaToko = config('app.name');
         $totalTagihan =  number_format($this->order->delivery->ongkos_kirim + $this->order->bayar, 0, ',', '.');
+        $banks = Post::where('type', 'akun_bank')->get();
+        $listBank = '';
+        foreach ($banks as $item) {
+            $bank = $item->metas->where('key', 'bank')->first()->value;
+            $noRek = $item->metas->where('key', 'no_rek')->first()->value;
+            $atasNama = $item->metas->where('key', 'atas_nama')->first()->value;
+            $listBank .= '- Bank ' . $bank . ' *' . $noRek . '* a.n *' . $atasNama . "* \n";
+        }
         $teks = "*[$namaToko]*\n\n";
         $teks .= "Halo Kak *" . $this->order->nama . "*\n";
         $teks .= "Terimakasih telah order di toko kami\n\n";
         $teks .= "Berikut adalah detail orderan kamu\n";
         $teks .= "No Invoice: *" . $this->order->invoice ."*\n";
         $teks .= "Total tagihan: *Rp " . $totalTagihan ."*\n\n";
-        $teks .= "Segera lakukan pembayaran ke salah nomor rekening berikut:\n";
-        $teks .= "- Bank xxx no xxx A.N xxx\n\n";
-        $teks .= "Jika sudah melakukan pembayaran silahkan luakukan konfirmasi di " . route('order.konfirmasi') . "\n\n";
-        $teks .= "*Terimakasih*";
+        $teks .= "Segera lakukan pembayaran ke salah nomor rekening berikut:\n\n";
+        $teks .= $listBank . "\n";
+        $teks .= "Jika sudah melakukan pembayaran silahkan luakukan konfirmasi di " . route('order.konfirmasi', ['invoice=' . $this->order->invoice]) . "\n\n";
+        $teks .= "Untuk melihat detail orderan anda kunjungi link berikut " . route('order.sukses', $this->order->invoice);
+        $teks .= "\n\n *Terimakasih*";
         $result = $wablas->sendMessage($teks);
         // dump($result);
     }

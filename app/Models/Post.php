@@ -15,4 +15,9 @@ class Post extends Model
     {
         return (strpos($image, 'http') === false) ? asset('storage/post/' . $image) : $image;
     }
+
+    public function metas()
+    {
+        return $this->morphMany(Meta::class, 'metaable');
+    }
 }

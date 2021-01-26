@@ -170,4 +170,31 @@ class DataTableController extends Controller
             ->rawColumns(['aksi'])
             ->make(true);
     }
+
+    public function bank()
+    {
+        $data = Post::query()->where('type', 'akun_bank');
+
+        return datatables()
+            ->of($data)
+            ->addColumn('bank', function($row) {
+                return $row->metas->where('key', 'bank')->first()->value;
+            })
+            ->addColumn('no_rek', function($row) {
+                return $row->metas->where('key', 'no_rek')->first()->value;
+            })
+            ->addColumn('atas_nama', function($row) {
+                return $row->metas->where('key', 'atas_nama')->first()->value;
+            })
+            ->addColumn('aksi', function ($row) {
+                // return $sumber
+                return "<form action='" . route('post.destroy', $row->id) . "' method='post'>
+                <input type='hidden' name='_token' value=" . csrf_token() . " />
+                <input type='hidden' name='_method' value='delete'/>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+            </form>";
+            })
+            ->rawColumns(['aksi'])
+            ->make(true);
+    }
 }

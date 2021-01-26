@@ -7,7 +7,7 @@ use GuzzleHttp\RequestOptions;
 
 class WablasClient {
     
-    protected $wablasEndpoint = 'https://sawit.wablas.com/';
+    protected $wablasEndpoint = 'https://teras.wablas.com/';
     protected $apiToken;
     protected $recipients = [];
     protected $httpClient;

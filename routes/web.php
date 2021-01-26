@@ -57,6 +57,7 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
         Route::get('/delivery',[DataTableController::class, 'delivery'])->name('dt.delivery');
         Route::get('/post',[DataTableController::class, 'posts'])->name('dt.post');
         Route::get('/footer',[DataTableController::class, 'footer'])->name('dt.footer');
+        Route::get('/bank',[DataTableController::class, 'bank'])->name('dt.bank');
     });
     Route::resource('product', AdminProductController::class);
     
@@ -82,6 +83,9 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
     // setting web
     Route::get('setting/web', [SettingController::class, 'web'])->name('setting.web');
     Route::post('setting/web/store', [SettingController::class, 'store'])->name('setting.web.store');
+    Route::get('setting/bank', [SettingController::class, 'bank'])->name('setting.bank');
+    Route::get('setting/bank/create', [SettingController::class, 'bankCreate'])->name('setting.bank.create');
+    Route::post('setting/bank/store', [SettingController::class, 'bankStore'])->name('setting.bank.store');
     Route::get('setting/footer', [SettingController::class, 'footer'])->name('setting.footer');
     Route::get('setting/footer/{post}/edit', [SettingController::class, 'editFooter'])->name('setting.footer.edit');
     

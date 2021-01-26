@@ -8,6 +8,7 @@ use App\Jobs\OrderCreated;
 use App\Models\Delivery;
 use App\Models\Meta;
 use App\Models\Order;
+use App\Models\Post;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Http\Request;
@@ -72,7 +73,9 @@ class OrderController extends Controller
 
     public function konfirmasiBayar()
     {
-        return view('site.order.konfirmasi-bayar');
+        $banks = Post::where('type', 'akun_bank')->get();
+
+        return view('site.order.konfirmasi-bayar', compact('banks'));
     }
 
     public function storeKonfirmasiBayar(StoreKonfirmasiBayar $request)
@@ -121,8 +124,9 @@ class OrderController extends Controller
     public function sukses(string $invoiceId)
     {
         $order = Order::where('invoice', $invoiceId)->firstOrFail();
+        $banks = Post::where('type', 'akun_bank')->get();
 
-        return view('site.order.sukses', compact('order'));
+        return view('site.order.sukses', compact('order', 'banks'));
     }
 
     public function lacakJson($invoice)

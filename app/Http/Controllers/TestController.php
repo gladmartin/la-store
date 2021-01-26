@@ -14,7 +14,7 @@ class TestController extends Controller
 
     public function wablas()
     {
-        $this->order = Order::find(19);
+        $this->order = Order::first();
         $apiToken = config('wablas.token');
         $wablas = new WablasClient($apiToken);
         $wablas->addRecipient('6282285365211');
@@ -35,19 +35,6 @@ class TestController extends Controller
 
     public function random()
     {
-        $this->shopId = 'bayerhealth';
-        $this->itemId = 'momies-kit-lock-lock-silicone-strap-bottle-550-ml';
-        $gql = [
-            'operationName' => 'PDPInfoQuery',
-            'variables' => [
-                'shopDomain' => $this->shopId,
-                'productKey' => $this->itemId,
-            ],
-            'query' => 'query PDPInfoQuery($shopDomain: String, $productKey: String) {  getPDPInfo(productID: 0, shopDomain: $shopDomain, productKey: $productKey) {    basic {      id      shopID      name      alias      price      priceCurrency      lastUpdatePrice      description      minOrder      maxOrder      status      weight      weightUnit      condition      url      sku      gtin      isKreasiLokal      isMustInsurance      isEligibleCOD      isLeasing      catalogID      needPrescription      __typename    }    category {      id      name      title      breadcrumbURL      isAdult      detail {        id        name        breadcrumbURL        __typename      }      __typename    }    pictures {      picID      fileName      filePath      description      isFromIG      width      height      urlOriginal      urlThumbnail      url300      status      __typename    }    preorder {      isActive      duration      timeUnit      __typename    }    wholesale {      minQty      price      __typename    }    videos {      source      url      __typename    }    campaign {      campaignID      campaignType      campaignTypeName      originalPrice      discountedPrice      isAppsOnly      isActive      percentageAmount      stock      originalStock      startDate      endDate      endDateUnix      appLinks      hideGimmick      __typename    }    stats {      countView      countReview      countTalk      rating      __typename    }    txStats {      txSuccess      txReject      itemSold      itemSoldPaymentVerified      __typename    }    cashback {      percentage      __typename    }    variant {      parentID      isVariant      __typename    }    stock {      useStock      value      stockWording      __typename    }    menu {      name      __typename    }    __typename  }}'
-        ];
-
-        $res = Http::post(config('lastore.proxy_shared_hoting'), $gql);
-
-        dd($res->json());
+        
     }
 }

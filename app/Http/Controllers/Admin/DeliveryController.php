@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\UpdateOrderResi;
 use App\Models\Delivery;
 use App\Models\DeliveryDetail;
 use Illuminate\Http\Request;
@@ -96,11 +97,17 @@ class DeliveryController extends Controller
         $request->validate([
             'keterangan' => 'required',
         ]);
+
         
-        DeliveryDetail::create([
+        
+        $deliveryDetail =  DeliveryDetail::create([
             'delivery_id' => $delivery->id,
             'keterangan' => $request->keterangan,
         ]);
+
+        // dd($deliveryDetail);
+
+        UpdateOrderResi::dispatch($deliveryDetail);
 
         return redirect()->back()->with('info', 'Detail pengantaran berhasil ditambah');
     }
