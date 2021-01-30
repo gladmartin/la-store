@@ -238,6 +238,16 @@
 
     <script src="{{ asset('/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+    {{-- <script src=""></script> --}}
+    {{-- <script src=""></script> --}}
+    {{-- <script src=""></script> --}}
 
 
     <script src="{{ asset('js/snackbarlight.min.js') }}"></script>
@@ -256,7 +266,6 @@
         $(document).ready(function () {
             $('.datatable').DataTable();
         });
-        
 
     </script>
     @if (session('info'))
@@ -266,7 +275,94 @@
 
     </script>
     @endif
+
+    <script>
+
+        $('body').on('click', '.btn-delete', function(e) {
+            return confirm('Apakah anda yakin? data akan dihapus permanen!');
+        });
+
+        $('.parent-check').on('click', function(e) {
+            if($(this).is(':checked',true)) {
+                $('.row-check').prop('checked', true);  
+            } else {  
+                $('.row-check').prop('checked',false);  
+            }  
+            countCheckd()
+        });
+
+        $('body').on('click', '.row-check', function() {
+            countCheckd();
+        });
+
+        function clearCheckd() {
+            $('.parent-check').prop('checked', false);
+            $('.row-check').prop('checked', false);  
+        }
+
+        function countCheckd() {
+            let checked = $('.row-check:checked').length;
+            if (checked <= 0) {
+                $('.header-action').hide();
+                return;
+            }
+            $('.btn-delete-bulk').html(`Hapus ${checked} data`);
+            $('.header-action').show();
+        }
+
+        async function sendDeleteBulk(endpoint, ids) {
+            let raw = await fetch(endpoint, {
+                method: 'delete',
+                headers : {
+                    'accept': 'application/json',
+                    'X-CSRF-TOKEN': CSRF_TOKEN,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    ids
+                })
+            });
+
+            let res = await raw.json();
+
+            return res;
+        }
+
+    </script>
+
     @stack('js')
+
+    <script>
+        $('.btn-delete-bulk').on('click', async function(e) {
+            e.preventDefault();
+            let endpoint = $(this).data('endpoint');
+            if (!endpoint) return false;
+            if (!confirm('Apakah anda yakin? data akan dihapus permanen!')) {
+                return false;
+            }
+            let ids = [];
+            let checked = $('.row-check:checked');
+            checked.each(function() {
+                let id = $(this).data('id');
+                ids.push(id);
+            });
+
+            if (ids.length <= 0) {
+                alert('Pilih checkbox yang mau dihpaus dulu.');
+                return false;
+            }
+            $('.btn-delete-bulk').html('Sedang memproses...');
+            let hasil = await sendDeleteBulk(endpoint, ids);
+            await table.ajax.reload();
+            clearCheckd();
+            countCheckd();
+
+            if (!hasil.success) {
+                alert('Tidak dapat menghapus data!');
+                return false;
+            }
+        });
+    </script>
 
 </body>
 

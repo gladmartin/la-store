@@ -78,7 +78,7 @@ class RajaOngkirController extends Controller
             'dari' => $kecamatanToko,
             'ke' => $request->ke,
             'berat' => $request->berat == 0 ? 1 : $request->berat,
-            'kurir' => 'jne,tiki,pos',
+            'kurir' => 'jne,jnt,sicepat',
         ]);
         // $raw = Http::post('https://pro.rajaongkir.com/api/cost', [
         //     'origin' => $kecamatanToko,

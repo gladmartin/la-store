@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Bulk\DeleteBulk;
 use App\Http\Requests\Post\StorePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
@@ -124,5 +125,21 @@ class PostController extends Controller
         $post->delete();
 
         return redirect()->back()->with('info', "$type brehasil dihapus");
+    }
+
+    public function deleteBulk(DeleteBulk $request)
+    {
+        $deleted = Post::destroy($request->ids);
+        if (!$deleted) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak ada delivery yang dihpaus',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Delivery berhasil dihapus',
+        ]);
     }
 }

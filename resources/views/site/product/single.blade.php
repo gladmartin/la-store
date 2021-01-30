@@ -253,6 +253,10 @@
                         </tr>
 
                     </table>
+                    <div class="form-group">
+                        <label for="catatan">Catatan <span class="text-info">(Jika ada)</span></label>
+                        <textarea name="catatan" id="catatan" cols="10" rows="3" class="form-control" placeholder="Tuliskan catatan pemesanan jika diperlukan."></textarea>
+                    </div>
                     <button type="submit" class="btn btn-primary btn-lg btn-block btn-submit">
                         <span class="icon-btn">
                             <i class="fa fa-shopping-cart"></i> 
@@ -265,12 +269,20 @@
             </div>
         </div>
     </form>
+    <div class="row">
+        <div class="col-lg-12 px-xs-0 mt-4">
+            <div class="shadow-sm bg-white p-4 rounded">
+                <h5>Produk yang mungkin serupa</h5>
+                <hr>
+                <div class="row">
+                    @each('components.card-item-product', $relatedProducts, 'item')
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
- {{-- Wa floating button --}}
-<a href="https://api.whatsapp.com/send?phone={{ $webOption->get('phone') }}&text=Hai mau tanya tentang {{ $product->title }} ({{ url()->current() }})" class="wa-float" target="_blank" title="Tanya ke CS kami!">
-    <i class="fa fa-whatsapp my-float"></i>
-</a>
+
 
 @endsection
 
@@ -488,7 +500,7 @@
         $('.ongkir-list-loading').hide();
         const response = await raw.json();
         if (!response.success) {
-            $('.ongkir-list').html('Failed load ongkir data');
+            $('.ongkir-list').html('<div class="col-12"><div class="alert alert-danger">Gagal memuat ongkos kirim, silahkan refresh halaman ini.</div></div>');
             console.log(response);
             return;
         }
@@ -578,6 +590,7 @@
         let provinsi = $('#provinsi').val();
         let provinsiHtml = $('#provinsi').html();
         let kecamatanHtml = $('#subdistrict').html();
+        let catatan = $('#catatan').val();
         let variants = [];
         $('.btn-variasi.terpilih').each(function() {
             let variantId = $(this).data('id');
@@ -599,6 +612,7 @@
             ekspedisi: selectedEkspedisi.ekspedisi,
             ongkos_kirim: selectedEkspedisi.harga,
             service: selectedEkspedisi.service,
+            catatan,
         }
         const raw = await fetch(BASE_URL + '/order', {
             method: 'post',

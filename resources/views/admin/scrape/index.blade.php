@@ -113,6 +113,24 @@
                     </span>
                     @enderror
                 </div>
+                <div class="form-group col-lg-6">
+                    <label for="persen">Persen harga</label>
+                    <input id="persen" type="number" class="form-control @error('persen') is-invalid @enderror" name="persen" value="{{ old('persen') }}" required>
+                    @error('persen')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
+                <div class="form-group col-lg-6">
+                    <label for="tambah">Tambah harga</label>
+                    <input id="tambah" type="number" class="form-control @error('tambah') is-invalid @enderror" name="tambah" value="{{ old('tambah') }}" required>
+                    @error('tambah')
+                    <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                    </span>
+                    @enderror
+                </div>
                 <div class="form-group col-lg-5">
                     <label for="thumbnail">Thumbnail produk</label>
                     <input id="thumbnail" type="file" class="form-control @error('thumbnail') is-invalid @enderror" name="thumbnail" value="{{ old('thumbnail') }}">
@@ -256,6 +274,8 @@
     async function fetchSingleProduct() {
         let persen = $('#persen').val();
         let tambah = $('#tambah').val();
+        $('input[name="persen"]').val(persen);
+        $('input[name="tambah"]').val(tambah);
         const raw = await fetch(`${BASE_URL_ADMIN}/scrape-mp/single?url=${encodeURIComponent(parseUrl.href)}&persen=${persen}&tambah=${tambah}`, {
             headers: {
                 'accept': 'application/json',
@@ -264,7 +284,8 @@
        
         const response = await raw.json();
         if (!response.success) {
-            return alert('gagal');
+            // return alert('gagal');
+            return;
         }
         const data = response.data;
         $('#modalScrape').modal('hide');
@@ -311,7 +332,6 @@
     function tambahRowFormVarian() {
         let varianFirst = $('.row-vairan-first:first').html()
         let countVarian = $('.list-varian .row').length;
-        console.log(countVarian);
         varianFirst = varianFirst.replaceAll('varian[0]', `varian[${countVarian}]`)
         let listVarian = $('.list-varian');
         listVarian.append(`<div class='row'>${varianFirst}</div>`);

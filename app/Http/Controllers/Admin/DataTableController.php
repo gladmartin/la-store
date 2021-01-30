@@ -17,6 +17,9 @@ class DataTableController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
+            ->addColumn('checkbox', function($row) {
+                return '<input type="checkbox" name="delete_bulk" class="row-check" data-id="'. $row->id .'">';
+            })
             ->editColumn('created_at', function ($row) {
                 return '<span class="badge badge-info">' . $row->created_at->format('d M Y h:i:s') . '</span>';
                 // return $row->created_at;
@@ -35,16 +38,17 @@ class DataTableController extends Controller
                 <input type='hidden' name='_method' value='delete'/>
                 <a title='Edit' href='" . route('product.edit', $row->id) . "' class='btn btn-dark
                 btn-sm'><i class='fa fa-edit'></i></a>
-                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm btn-delete'><i class='fa fa-trash'></i></button>
                 $sumber
             </form>";
             })
-            ->rawColumns(['aksi', 'created_at', 'title'])
+            ->rawColumns(['aksi', 'created_at', 'title', 'checkbox'])
             ->make(true);
     }
 
     public function order($status = 'all')
     {
+        // $data = Order::query()->where('product_id', '!=', null);
         $data = Order::query();
         if ($status == 'pending') {
             $data->where('status_pembayaran', 'MENUNGGU KONFIRMASI');
@@ -58,6 +62,9 @@ class DataTableController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
+            ->addColumn('checkbox', function($row) {
+                return '<input type="checkbox" name="delete_bulk" class="row-check" data-id="'. $row->id .'">';
+            })
             ->editColumn('invoice', function ($row) {
                 return '<span class="badge badge-dark">' . $row->invoice . '</span>';
             })
@@ -68,7 +75,7 @@ class DataTableController extends Controller
                 return "$row->nama </br> $row->email </br> $row->no_wa";
             })
             ->addColumn('product', function ($row) {
-                return $row->product->title;
+                return $row->product->title ?? '--Produk Telah Dihapus--';
             })
             ->addColumn('aksi', function ($row) use ($status) {
                 // return $sumber
@@ -87,10 +94,10 @@ class DataTableController extends Controller
                 $tambahan
                 <a title='Detail' href='" . route('order.show', $row->id) . "' class='btn btn-dark
                 btn-sm'><i class='fa fa-eye'></i></a>
-                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm btn-delete'><i class='fa fa-trash'></i></button>
             </form>";
             })
-            ->rawColumns(['aksi', 'customer', 'invoice'])
+            ->rawColumns(['aksi', 'customer', 'invoice', 'checkbox'])
             ->make(true);
     }
 
@@ -102,6 +109,9 @@ class DataTableController extends Controller
         return datatables()
             ->of($data)
             ->addIndexColumn()
+            ->addColumn('checkbox', function($row) {
+                return '<input type="checkbox" name="delete_bulk" class="row-check" data-id="'. $row->id .'">';
+            })
             ->addColumn('address', function ($row) {
                 return $row->order->alamat;
             })
@@ -115,10 +125,10 @@ class DataTableController extends Controller
                 <input type='hidden' name='_method' value='delete'/>
                 <a title='Detail' href='" . route('delivery.edit', $row->id) . "' class='btn btn-dark
                 btn-sm'><i class='fa fa-edit'></i></a>
-                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm btn-delete'><i class='fa fa-trash'></i></button>
             </form>";
             })
-            ->rawColumns(['aksi', 'customer', 'invoice'])
+            ->rawColumns(['aksi', 'customer', 'invoice', 'checkbox'])
             ->make(true);
     }
 
@@ -128,6 +138,9 @@ class DataTableController extends Controller
 
         return datatables()
             ->of($data)
+            ->addColumn('checkbox', function($row) {
+                return '<input type="checkbox" name="delete_bulk" class="row-check" data-id="'. $row->id .'">';
+            })
             ->editColumn('created_at', function ($row) {
                 return $row->created_at->format('d M Y h:i:s');
             })
@@ -144,10 +157,10 @@ class DataTableController extends Controller
                 <input type='hidden' name='_method' value='delete'/>
                 <a title='Edit' href='" . route('post.edit', $row->id) . "' class='btn btn-dark
                 btn-sm'><i class='fa fa-edit'></i></a>
-                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm btn-delete'><i class='fa fa-trash'></i></button>
             </form>";
             })
-            ->rawColumns(['aksi', 'image', 'title'])
+            ->rawColumns(['aksi', 'image', 'title', 'checkbox'])
             ->make(true);
     }
 
@@ -157,6 +170,9 @@ class DataTableController extends Controller
 
         return datatables()
             ->of($data)
+            ->addColumn('checkbox', function($row) {
+                return '<input type="checkbox" name="delete_bulk" class="row-check" data-id="'. $row->id .'">';
+            })
             ->addColumn('aksi', function ($row) {
                 // return $sumber
                 return "<form action='" . route('post.destroy', $row->id) . "' method='post'>
@@ -164,10 +180,10 @@ class DataTableController extends Controller
                 <input type='hidden' name='_method' value='delete'/>
                 <a title='Edit' href='" . route('post.edit', $row->id) . "?type=widget_footer' class='btn btn-dark
                 btn-sm'><i class='fa fa-edit'></i></a>
-                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm btn-delete'><i class='fa fa-trash'></i></button>
             </form>";
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'checkbox'])
             ->make(true);
     }
 
@@ -177,6 +193,9 @@ class DataTableController extends Controller
 
         return datatables()
             ->of($data)
+            ->addColumn('checkbox', function($row) {
+                return '<input type="checkbox" name="delete_bulk" class="row-check" data-id="'. $row->id .'">';
+            })
             ->addColumn('bank', function($row) {
                 return $row->metas->where('key', 'bank')->first()->value;
             })
@@ -191,10 +210,10 @@ class DataTableController extends Controller
                 return "<form action='" . route('post.destroy', $row->id) . "' method='post'>
                 <input type='hidden' name='_token' value=" . csrf_token() . " />
                 <input type='hidden' name='_method' value='delete'/>
-                <button title='Hapus' type='submit' class='btn btn-danger btn-sm'><i class='fa fa-trash'></i></button>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm btn-delete'><i class='fa fa-trash'></i></button>
             </form>";
             })
-            ->rawColumns(['aksi'])
+            ->rawColumns(['aksi', 'checkbox'])
             ->make(true);
     }
 }

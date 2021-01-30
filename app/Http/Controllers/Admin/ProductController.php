@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Product\ProductStoreRequest;
 use App\Http\Requests\Admin\Product\ProductUpdateRequest;
+use App\Http\Requests\Bulk\DeleteBulk;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -90,6 +91,21 @@ class ProductController extends Controller
         if ($variants) {
             $product->variants()->insert($variants);
         }
+        $insertMeta = [
+            [
+                'key' => 'harga_tambahan',
+                'value' => $request->tambah ?? 0,
+                'metaable_id' => $product->id,
+                'metaable_type' => Product::class,
+            ],
+            [
+                'key' => 'harga_tambahan_persen',
+                'value' => $request->persen ?? 0,
+                'metaable_id' => $product->id,
+                'metaable_type' => Product::class,
+            ]
+        ];
+        $product->metas()->insert($insertMeta);
 
         return redirect()->route('product.index')->with('info', 'Produk berhasil ditambahakan');
     }
@@ -190,5 +206,21 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('product.index')->with('info', 'Produk berhasil dihapus');
+    }
+
+    public function deleteBulk(DeleteBulk $request)
+    {
+        $deleted = Product::destroy($request->ids);
+        if (!$deleted) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak ada produk yang dihpaus',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Produk berhasil dihapus',
+        ]);
     }
 }

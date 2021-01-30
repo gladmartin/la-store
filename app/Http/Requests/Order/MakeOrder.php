@@ -37,6 +37,7 @@ class MakeOrder extends FormRequest
             'ekspedisi' => ['required'],
             'service' => ['required'],
             'ongkos_kirim' => ['required'],
+            'catatan' => ['nullable'],
         ];
     }
 }

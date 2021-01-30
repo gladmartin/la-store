@@ -104,6 +104,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ route('dashboard') }}">Dashboard</a>
                                 <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                     {{ __('Logout') }}
@@ -140,12 +141,18 @@
                     <img data-src="{{ asset('img/logo-store.png') }}" alt="LaStore" width="130px">
                     </a>
                 </div>
-            <form method="get" class="form-search" action="{{ route('shop.index') }}">
+                <form method="get" class="form-search" action="{{ route('shop.index') }}">
                     <div class="input-group">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" title="Kategori" type="button" id="button-addon2" data-toggle="modal" data-target="#modalCategory">
+                                <i class="fa fa-box"></i>
+                            </button>
+                        </div>
+                       
                         <input type="text" class="form-control border-0" placeholder="Cari produk apa.."
                             aria-label="Cari produk apa.." autocomplete="off" aria-describedby="button-addon2" name="q" value="{{ request()->q }}">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="button" id="button-addon2">
+                            <button class="btn btn-primary" title="Cari" type="button" id="button-addon2">
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
@@ -198,11 +205,34 @@
                     <div><i class="fa fa-box"></i></div>
                     <div class="nav-bottom-text max-line-1">Lacak pesanan</div>
                 </a>
+                @auth
+                <a href="{{route('dashboard')}}" class="text-center nav-bottom-item {{ isMenuActive('dashboard') }}">
+                    <div><i class="fa fa-dashboard"></i></div>
+                    <div class="nav-bottom-text max-line-1">Dashboard</div>
+                </a>
+                @endauth
             </nav>
         </div>
+    </div>
 
-       
+     {{-- Wa floating button --}}
+    <a href="https://api.whatsapp.com/send?phone={{ $webOption->get('phone') }}&text={{ $pesanWaFloatingButton ?? 'Hai kak, mau tanya dulu' }}" class="wa-float" target="_blank" title="Tanya ke CS kami!">
+        <i class="fa fa-whatsapp my-float"></i>
+    </a>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modalCategory" tabindex="-1" aria-labelledby="modalCategoryLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <h5 class="modal-title mb-3" id="modalCategoryLabel">Kategori</h5>
+
+                <div class="list-cat"></div>
+            
+                <button type="button" class="mt-4 btn btn-secondary btn-block" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+        </div>
     </div>
 
     <!-- Scripts -->
@@ -232,6 +262,19 @@
         const el = document.querySelectorAll('img');
         const observer = lozad(el); // passing a `NodeList` (e.g. `document.querySelectorAll()`) is also valid
         observer.observe();
+        async function loadListCat() {
+            let raw = await fetch(BASE_URL_API + '/menu-cat');
+            let res = await raw.json();
+            if (!res.success || !res.data) {
+                return false;
+            }
+            let html = '';
+            for (const cat of res.data) {
+                html += `<a href="${cat.url}" class="btn btn-outline-primary mr-2 mb-3">${cat.name}</a>`
+            }
+            $('.list-cat').html(html);
+        }
+        loadListCat();
     </script>
      @if (session('info'))
      <script>

@@ -18,8 +18,15 @@
         <div class="table-responsive">
             <table class="table datatable-server-side">
                 <thead>
+                    <tr class="header-action" style="display: none">
+                        <td colspan="8">
+                        <a href="" class="btn btn-danger btn-sm btn-shadow btn-delete-bulk" data-endpoint="{{ route('product.delete-bulk') }}"></a>
+                        </td>
+                    </tr>
                     <tr>
-                        {{-- <th>#</th> --}}
+                        <th>
+                            <input type="checkbox" class="parent-check">
+                        </th>
                         <th>Invoice</th>
                         <th>Nomor Resi</th>
                         <th>Ekspedisi</th>
@@ -41,10 +48,19 @@
 <script>
     let elementTable = $('.datatable-server-side');
     let table = elementTable.DataTable({
+        dom: 'Bfrtip',
         processing: true,
         serverSide: true,
         ajax: '{{ route("dt.delivery") }}',
+        buttons: [
+            'excel', 'pdf', 'print'
+        ],
         columns: [
+            {
+                data: 'checkbox',
+                name: 'checkbox',
+                orderable: false,
+            },
             {
                 data: 'order.invoice',
                 name: 'order.invoice',
@@ -74,6 +90,7 @@
             {
                 data: 'aksi',
                 name: 'aksi',
+                orderable: false
             },
         ],
         order: [

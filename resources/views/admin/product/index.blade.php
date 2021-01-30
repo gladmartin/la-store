@@ -19,13 +19,7 @@
                 aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
             </a>
-            <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                <div class="dropdown-header">Dropdown Header:</div>
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+           
         </div>
     </div>
     <!-- Card Body -->
@@ -33,13 +27,20 @@
         <div class="table-responsive">
             <table class="table datatable-server-side">
                 <thead>
+                    <tr class="header-action" style="display: none">
+                        <td colspan="8">
+                        <a href="" class="btn btn-danger btn-sm btn-shadow btn-delete-bulk" data-endpoint="{{ route('product.delete-bulk') }}"></a>
+                        </td>
+                    </tr>
                     <tr>
-                        {{-- <th>#</th> --}}
+                        <th>
+                            <input type="checkbox" class="parent-check">
+                        </th>
                         <th>Produk</th>
                         <th>Stok</th>
                         <th>Terjual</th>
                         <th>Tanggal post</th>
-                        <th width="100">Aksi</th>
+                        <th width="120">Aksi</th>
                     </tr>
                 </thead>
 
@@ -54,10 +55,19 @@
 <script>
     let elementTable = $('.datatable-server-side');
     let table = elementTable.DataTable({
+        dom: 'Bfrtip',
         processing: true,
         serverSide: true,
         ajax: '{{ route("dt.product") }}',
+        buttons: [
+            'excel', 'pdf', 'print'
+        ],
         columns: [
+            {
+                data: 'checkbox',
+                name: 'checkbox',
+                orderable: false,
+            },
             {
                 data: 'title',
                 name: 'title',
@@ -77,12 +87,13 @@
             {
                 data: 'aksi',
                 name: 'aksi',
+                orderable: false,
             },
         ],
         order: [
             [3, 'desc']
         ]
     });
-
+    
 </script>
 @endpush

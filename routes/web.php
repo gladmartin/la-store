@@ -43,40 +43,45 @@ Route::get('/order/sukses/{invoiceId}', [OrderController::class, 'sukses'])->nam
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
 // auth routes
-Route::group(['prefix' => 'app-auth'], function() {
+Route::group(['prefix' => 'app-auth'], function () {
     Auth::routes(['register' => false, 'reset' => false, 'verify' => false]);
 });
 
 // admin routes 
-Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
+Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
+
     // data table
-    Route::group(['prefix' => 'data-table'], function() {
-        Route::get('/product',[DataTableController::class, 'products'])->name('dt.product');
-        Route::get('/order/{status?}',[DataTableController::class, 'order'])->name('dt.order');
-        Route::get('/delivery',[DataTableController::class, 'delivery'])->name('dt.delivery');
-        Route::get('/post',[DataTableController::class, 'posts'])->name('dt.post');
-        Route::get('/footer',[DataTableController::class, 'footer'])->name('dt.footer');
-        Route::get('/bank',[DataTableController::class, 'bank'])->name('dt.bank');
+    Route::group(['prefix' => 'data-table'], function () {
+        Route::get('/product', [DataTableController::class, 'products'])->name('dt.product');
+        Route::get('/order/{status?}', [DataTableController::class, 'order'])->name('dt.order');
+        Route::get('/delivery', [DataTableController::class, 'delivery'])->name('dt.delivery');
+        Route::get('/post', [DataTableController::class, 'posts'])->name('dt.post');
+        Route::get('/footer', [DataTableController::class, 'footer'])->name('dt.footer');
+        Route::get('/bank', [DataTableController::class, 'bank'])->name('dt.bank');
     });
+
+    // product
+    Route::delete('/product/delete-bulk', [AdminProductController::class, 'deleteBulk'])->name('product.delete-bulk');
     Route::resource('product', AdminProductController::class);
-    
+
     // scrape marketplace
     Route::get('/scrape-mp', [ScrapeMarketPlaceController::class, 'index'])->name('scrape-mp.index');
     Route::get('/scrape-mp/single', [ScrapeMarketPlaceController::class, 'single'])->name('scrape-mp.single');
     Route::get('/scrape-mp/multiple', [ScrapeMarketPlaceController::class, 'multiple'])->name('scrape-mp.multiple');
 
     // order 
+    Route::delete('order/delete-bulk', [AdminOrderController::class, 'deleteBulk'])->name('order.delete-bulk');
     Route::get('order/{order}/konfirmasi-bayar', [AdminOrderController::class, 'konfirmasiBayar'])->name('order.konfirmasi-bayar');
     Route::get('order/{order}/sampai', [AdminOrderController::class, 'sampai'])->name('order.sampai');
     Route::resource('order', AdminOrderController::class);
 
     //delivery
+    Route::delete('delivery/delete-bulk', [DeliveryController::class, 'deleteBulk'])->name('delivery.delete-bulk');
     Route::post('delivery/{delivery}/store-detail', [DeliveryController::class, 'storeDetail'])->name('delivery.store.detail');
     Route::get('delivery/{deliveryDetail}/delete-detail', [DeliveryController::class, 'deleteDetail'])->name('delivery.delete.detail');
     Route::resource('delivery', DeliveryController::class);
-    
+
     // account
     Route::get('account', [AccountController::class, 'index'])->name('account.index');
     Route::put('account', [AccountController::class, 'update'])->name('account.update');
@@ -89,12 +94,15 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function() {
     Route::post('setting/bank/store', [SettingController::class, 'bankStore'])->name('setting.bank.store');
     Route::get('setting/footer', [SettingController::class, 'footer'])->name('setting.footer');
     Route::get('setting/footer/{post}/edit', [SettingController::class, 'editFooter'])->name('setting.footer.edit');
-    
+
 
     // posts 
+    Route::delete('post/delete-bulk', [AdminPostController::class, 'deleteBulk'])->name('post.delete-bulk');
     Route::resource('/post', AdminPostController::class);
-    
 
+    Route::fallback(function () {
+        return view('errors.404-app-panel');
+    });
 });
 
 // test routes

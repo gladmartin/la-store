@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RajaOngkirController;
+use App\Http\Controllers\SiteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,5 +25,6 @@ Route::get('/province', [RajaOngkirController::class, 'province']);
 Route::get('/city', [RajaOngkirController::class, 'city']);
 Route::get('/subdistrict', [RajaOngkirController::class, 'subdistrict']);
 Route::get('/ongkir', [RajaOngkirController::class, 'ongkir']);
-
 Route::get('/lacak-order/{invoice}', [OrderController::class, 'lacakJson']);
+
+Route::get('/menu-cat', [SiteController::class, 'menuCat']);

@@ -71,4 +71,9 @@ class Product extends Model
 
         return $data;
     }
+
+    public function metas()
+    {
+        return $this->morphMany(Meta::class, 'metaable');
+    }
 }

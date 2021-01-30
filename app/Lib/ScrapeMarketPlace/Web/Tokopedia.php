@@ -34,7 +34,7 @@ class Tokopedia
         ];
     }
 
-    public function singleProduct()
+    public function singleProduct($persen = 0, $tambah = 0)
     {
         $ids = explode('/', $this->parseUrl['path']);
         if (count($ids) < 3) throw new TokopediaException('Url produk tidak valid domain toko dan slug produk tidak ada');
@@ -76,6 +76,13 @@ class Tokopedia
         //     }
         // }
 
+        $price = $result->basic->price;
+        if ($persen > 0) {
+            $priceUp = $price * $persen / 100;
+            $price = $price + $priceUp;
+        }
+        $price = $price + $tambah;
+
         $returnData = [
             'name' => $result->basic->name,
             'categories' => $categories,
@@ -84,7 +91,7 @@ class Tokopedia
             'description' => $result->basic->description ?? 'N/A',
             'stock' => $result->stock->value ?? 1,
             'weight' => $result->basic->weight ?? 100,
-            'price' => $result->basic->price,
+            'price' => $price,
             'variants' => $variants,
         ];
 

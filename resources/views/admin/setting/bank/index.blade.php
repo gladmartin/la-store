@@ -16,7 +16,15 @@
         <div class="table-responsive">
             <table class="table datatable-server-side">
                 <thead>
+                    <tr class="header-action" style="display: none">
+                        <td colspan="8">
+                        <a href="" class="btn btn-danger btn-sm btn-shadow btn-delete-bulk" data-endpoint="{{ route('post.delete-bulk') }}"></a>
+                        </td>
+                    </tr>
                     <tr>
+                        <th>
+                            <input type="checkbox" class="parent-check">
+                        </th>
                         <th>Bank</th>
                         <th>No rekening</th>
                         <th>Atas nama</th>
@@ -40,6 +48,11 @@
         ajax: '{{ route("dt.bank") }}',
         columns: [
             {
+                data: 'checkbox',
+                name: 'checkbox',
+                orderable: false,
+            },
+            {
                 data: 'bank',
                 name: 'bank',
             },
@@ -54,6 +67,7 @@
             {
                 data: 'aksi',
                 name: 'aksi',
+                orderable: false,
             },
         ]
     });

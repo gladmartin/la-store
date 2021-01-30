@@ -228,3 +228,8 @@ a:hover {
     text-overflow: ellipsis;
     line-height: 1.875rem;
 }
+
+
+.cat-menu {
+    width: 40px;
+}

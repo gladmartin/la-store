@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Bulk\DeleteBulk;
 use App\Jobs\OrderClose;
 use App\Jobs\OrderKonfirmasi;
 use App\Models\Order;
@@ -93,7 +94,7 @@ class OrderController extends Controller
         $order->status_order = 'SEDANG DIKIRIM';
         $order->status_pembayaran = 'LUNAS';
         $order->save();
-        
+
         OrderKonfirmasi::dispatch($order);
 
         return redirect()->back()->with('info', 'Status pembayaran berhasil diubah');
@@ -108,5 +109,21 @@ class OrderController extends Controller
         OrderClose::dispatch($order);
 
         return redirect()->back()->with('info', 'Orderan telah terkirim!');
+    }
+
+    public function deleteBulk(DeleteBulk $request)
+    {
+        $deleted = Order::destroy($request->ids);
+        if (!$deleted) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak ada orderan yang dihpaus',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Orderan berhasil dihapus',
+        ]);
     }
 }

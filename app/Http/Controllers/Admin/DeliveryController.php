@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Bulk\DeleteBulk;
 use App\Jobs\UpdateOrderResi;
 use App\Models\Delivery;
 use App\Models\DeliveryDetail;
@@ -117,5 +118,21 @@ class DeliveryController extends Controller
         $deliveryDetail->delete();
 
         return redirect()->back()->with('info', 'Detail pengantaran berhasil dihapus');
+    }
+
+    public function deleteBulk(DeleteBulk $request)
+    {
+        $deleted = Delivery::destroy($request->ids);
+        if (!$deleted) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak ada delivery yang dihpaus',
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Delivery berhasil dihapus',
+        ]);
     }
 }

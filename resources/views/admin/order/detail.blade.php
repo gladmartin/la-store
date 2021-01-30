@@ -52,6 +52,10 @@
                 <td>Alamat pengataran</td>
                 <td>{{ $order->alamat }}</td>
             </tr>
+            <tr>
+                <td>Catatan pemesanan</td>
+                <td>{{ $order->metas->where('key', 'catatan')->first()->value ?? '-' }}</td>
+            </tr>
             @if ($order->konfirmasiPembayaran)
             <tr>
                 <td><span class="badge badge-info">Konfirmasi pembayaran</span></td>

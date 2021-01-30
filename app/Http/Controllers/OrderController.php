@@ -71,6 +71,13 @@ class OrderController extends Controller
             'status_pembayaran' => 'BELUM DIBAYAR',
         ]);
 
+        if ($request->catatan) {
+            $order->metas()->create([
+                'key' => 'catatan',
+                'value' => $request->catatan,
+            ]);
+        }
+
         $order->metas()->create([
             'key' => 'kecamatan',
             'value' => $request->kecamatan
