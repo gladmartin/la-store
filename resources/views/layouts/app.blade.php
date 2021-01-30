@@ -60,7 +60,7 @@
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{-- {{ config('app.name', 'Laravel') }} --}}
-                <img src="{{ asset('img/logo-store.png') }}" width="100px">
+                <img src="{{ asset('storage/' . $webOption->get('logo') ) }}" width="100px">
                 </a>
                 <button class="navbar-toggler hidden-xs" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -138,7 +138,7 @@
                 <div class="text-center">
                     <a class="navbar-brand text-white font-weight-bold text-center" href="{{ url('/') }}">
                         {{-- {{ config('app.name', 'Laravel') }} --}}
-                    <img data-src="{{ asset('img/logo-store.png') }}" alt="LaStore" width="130px">
+                    <img data-src="{{ asset('storage/' . $webOption->get('logo') ) }}" alt="LaStore" width="130px">
                     </a>
                 </div>
                 <form method="get" class="form-search" action="{{ route('shop.index') }}">

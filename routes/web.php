@@ -9,12 +9,14 @@ use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ScrapeMarketPlaceController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\AutoUpdateProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +43,16 @@ Route::post('/order/konfirmasi-pembayaran/store', [OrderController::class, 'stor
 Route::get('/order/lacak', [OrderController::class, 'lacak'])->name('order.lacak');
 Route::get('/order/sukses/{invoiceId}', [OrderController::class, 'sukses'])->name('order.sukses');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
+
+Route::get('/auto-update/product', [AutoUpdateProductController::class, 'index']);
+
+Route::group(['prefix' => 'sitemap'], function () {
+    Route::get('/', [SitemapController::class, 'index']);
+    Route::get('/menu', [SitemapController::class, 'menu']);
+    Route::get('/products', [SitemapController::class, 'products']);
+    Route::get('/posts', [SitemapController::class, 'posts']);
+    Route::get('/categories', [SitemapController::class, 'categories']);
+});
 
 // auth routes
 Route::group(['prefix' => 'app-auth'], function () {
@@ -69,6 +81,7 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function () {
     Route::get('/scrape-mp', [ScrapeMarketPlaceController::class, 'index'])->name('scrape-mp.index');
     Route::get('/scrape-mp/single', [ScrapeMarketPlaceController::class, 'single'])->name('scrape-mp.single');
     Route::get('/scrape-mp/multiple', [ScrapeMarketPlaceController::class, 'multiple'])->name('scrape-mp.multiple');
+    Route::post('/scrape-mp/background', [ScrapeMarketPlaceController::class, 'background'])->name('scrape-mp.background');
 
     // order 
     Route::delete('order/delete-bulk', [AdminOrderController::class, 'deleteBulk'])->name('order.delete-bulk');

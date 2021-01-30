@@ -101,9 +101,31 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <button class="btn btn-primary btn-sm shadow" type="submit">Perbarui</button>
+                    <div class=" bg-gradient-light px-3 py-2 rounded">
+                        <h5>Setting Wablas</h5>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="wa"><b>Token</b></span>
+                                    </div>
+                                    <input type="text" name="options[wablas_token]" class="form-control  " value="{{ $webOption->get('wablas_token') }}" placeholder="Masukkan token wablas disini">
+                                </div>
+                            </div>
+                           <div class="col-lg-6">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="wa"><b>Server</b></span>
+                                </div>
+                                <input type="url" name="options[wablas_server]" class="form-control" value="{{ $webOption->get('wablas_server') }}" placeholder="Masukkuan url server wablas disini">
+                            </div>
+                           </div>
+                        </div>
+                        <button class="btn btn-primary btn-sm shadow mt-5" type="submit">Perbarui semua settings</button>
+                    </div>
                 </div>
             </div>
+            
         </form>
     </div>
 </div>

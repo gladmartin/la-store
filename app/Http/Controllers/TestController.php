@@ -24,8 +24,8 @@ class TestController extends Controller
         $teks .= "Halo Kak *" . $this->order->nama . "*\n";
         $teks .= "Terimakasih telah order di toko kami\n\n";
         $teks .= "Berikut adalah detail orderan kamu\n";
-        $teks .= "No Invoice: *" . $this->order->invoice ."*\n";
-        $teks .= "Total tagihan: *Rp " . $totalTagihan ."*\n\n";
+        $teks .= "No Invoice: *" . $this->order->invoice . "*\n";
+        $teks .= "Total tagihan: *Rp " . $totalTagihan . "*\n\n";
         $teks .= "Segera lakukan pembayaran ke salah nomor rekening berikut:\n";
         $teks .= "- Bank xxx no xxx A.N xxx\n\n";
         $teks .= "Jika sudah melakukan pembayaran silahkan luakukan konfirmasi di " . route('order.konfirmasi') . "\n\n";
@@ -35,6 +35,10 @@ class TestController extends Controller
 
     public function random()
     {
-        
+        $re = new Request();
+        $re->setMethod('POST');
+        $re->request->add(['foo' => 'bar']);
+        $re->request->add(['ad' => ['sd']]);
+        dd($re->all());
     }
 }

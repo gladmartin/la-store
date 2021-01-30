@@ -37,10 +37,14 @@
                 <input name="url_mp" type="url" id="url" placeholder="Masukkan url produk atau toko"
                     class="form-control">
             </div>
-            <div class="form-group">
+            {{-- <div class="form-group"> --}}
                 <input type="checkbox" name="is_toko" id="is-toko"> 
-                <label for="is-toko">Url toko?</label>
-            </div>
+                <label for="is-toko" class="mr-5">Url toko?</label>
+                {{-- <div class="my-5"></div> --}}
+                <input type="checkbox" name="run_background" id="run_background"> 
+                <label for="run_background">Jalankan di background?</label>
+            {{-- </div> --}}
+            
            <div class="row">
             <div class="form-group col-lg-6">
                 <label for="is-toko">Kali berapa persen</label>
@@ -218,6 +222,16 @@
         $('.btn-mulai .icon-btn').html('<i class="fas fa-circle-notch fa-spin"></i>');
         $('.btn-mulai .txt').html('Sedang memproses..');
         isMuliptleProduct = checkIsMultipleProduct();
+        if (isRunInBackground()) {
+            await fetchBackground();
+            $('.form-scrape')[0].reset()
+            $('.btn-mulai').removeAttr('disabled');
+            $('.btn-mulai .icon-btn').html('<i class="fas fa-circle-notch fa-plus"></i>');
+            $('.btn-mulai .txt').html('Mulai');
+            alert('Scrape sedang berjalan dibackground server');
+            return;
+        }
+
         try {
             if (!isMuliptleProduct) {
                 await fetchSingleProduct();
@@ -255,7 +269,24 @@
         if (parseUrl.host == 'shopee.co.id') {
             return parseUrl.href.includes('https://shopee.co.id/shop') ? true : false;
         }
-        
+    }
+
+    function isRunInBackground() {
+        return $('#run_background').is(":checked");
+    }
+
+    async function fetchBackground() {
+        const raw = await fetch(`${BASE_URL_ADMIN}/scrape-mp/background`, {
+            method: 'post',
+            headers : {
+                'accept': 'application/json',
+                'X-CSRF-TOKEN': CSRF_TOKEN,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: $('.form-scrape').serialize(),
+        });
+
+        console.log(raw);
     }
 
     async function fetchMultipleProduct() {

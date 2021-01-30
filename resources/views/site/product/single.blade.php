@@ -90,6 +90,13 @@
                                         </td>
                                     </tr>
                                     @endforeach
+                                    @if ($product->stok <= 0) 
+                                        <tr>
+                                            <th colspan="3">
+                                                <div class="alert alert-danger">Maaf stok produk ini sudah habis!</div>
+                                            </th>
+                                        </tr>
+                                    @endif
                                 </table>
                             </div>
                         </div>
@@ -104,7 +111,8 @@
                 </div>
             </div>
         </div>
-
+        @if ($product->stok > 0)
+            
         <div class="row mt-4">
             <div class="col-lg-7 px-xs-0">
                 <div class="shadow-sm bg-white p-4 rounded">
@@ -268,6 +276,8 @@
                 </div>
             </div>
         </div>
+        
+        @endif
     </form>
     <div class="row">
         <div class="col-lg-12 px-xs-0 mt-4">
@@ -288,11 +298,6 @@
 
 @push('js')
 <script>
-
-// window.onerror = function (message, url, lineNo){
-//     alert('Error: ' + message + '\n' + 'Line Number: ' + lineNo);
-//     return true;
-// }
     //declare global variable --i know this is a dirty js code :D
     var beratProduk = {{ $product->berat }};
     var kuantitas = 1;
@@ -480,7 +485,7 @@
         kecamatan = $('#subdistrict').val();
         // kecamatan = 4045;
         if (!kecamatan) {
-            alert('Pilih kecamatan dahulu');
+            // alert('Pilih kecamatan dahulu');
             return;
         }
 

@@ -7,14 +7,15 @@ use GuzzleHttp\RequestOptions;
 
 class WablasClient {
     
-    protected $wablasEndpoint = 'https://teras.wablas.com/';
+    protected $wablasEndpoint;
     protected $apiToken;
     protected $recipients = [];
     protected $httpClient;
     protected $headers;
 
-    public function __construct($apiToken) {
-        $this->apiToken = $apiToken;
+    public function __construct($apiToken = null) {
+        $this->apiToken = $apiToken ?? webOption()->get('wablas_token');
+        $this->wablasEndpoint = webOption()->get('wablas_server') ?? 'https://teras.wablas.com/';
         $this->headers = [
             'Accept' => 'application/json',
             'Authorization' => $this->apiToken,

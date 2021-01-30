@@ -14,7 +14,9 @@ use Illuminate\Queue\SerializesModels;
 class UpdateOrderResi implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    
     protected $deliveryDetail;
+    
     /**
      * Create a new job instance.
      *
@@ -32,8 +34,7 @@ class UpdateOrderResi implements ShouldQueue
      */
     public function handle()
     {
-        $apiToken = config('wablas.token');
-        $wablas = new WablasClient($apiToken);
+        $wablas = new WablasClient();
         $wablas->addRecipient($this->deliveryDetail->delivery->order->no_wa);
         $namaToko = config('app.name');
         $teks = "*[$namaToko]*\n\n";

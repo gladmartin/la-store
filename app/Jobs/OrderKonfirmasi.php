@@ -34,8 +34,7 @@ class OrderKonfirmasi implements ShouldQueue
      */
     public function handle()
     {
-        $apiToken = config('wablas.token');
-        $wablas = new WablasClient($apiToken);
+        $wablas = new WablasClient();
         $wablas->addRecipient($this->order->no_wa);
         $namaToko = config('app.name');
         $totalTagihan =  number_format($this->order->delivery->ongkos_kirim + $this->order->bayar, 0, ',', '.');

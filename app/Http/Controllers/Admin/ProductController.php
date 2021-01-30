@@ -49,6 +49,7 @@ class ProductController extends Controller
         if ($request->galeri) {
             $imagesUploaded = explode('|', $request->galeri);
         }
+        
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail');
             $thumbnailUploaded = Storage::put('public/product', $thumbnail);
