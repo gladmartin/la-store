@@ -119,5 +119,5 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function () {
 });
 
 // test routes
-Route::get('/test/wablas', [TestController::class, 'wablas']);
-Route::get('/test', [TestController::class, 'random']);
+// Route::get('/test/wablas', [TestController::class, 'wablas']);
+// Route::get('/test', [TestController::class, 'random']);

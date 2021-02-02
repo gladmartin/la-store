@@ -34,8 +34,8 @@
         <form action="" method="post" class="form-scrape">
             @csrf
             <div class="form-group">
-                <input name="url_mp" type="url" id="url" placeholder="Masukkan url produk atau toko"
-                    class="form-control">
+                <textarea name="url_mp" type="url" id="url" placeholder="Masukkan url produk atau toko"
+                    class="form-control" rows="9"></textarea>
             </div>
             {{-- <div class="form-group"> --}}
                 <input type="checkbox" name="is_toko" id="is-toko"> 
@@ -214,10 +214,13 @@
     let isMuliptleProduct;
     $('.form-scrape').on('submit', async function (e) {
         e.preventDefault();
-        let url = $('#url').val();
-        if (!url) return;
-        parseUrl = new URL(url);
-        if (!supportMp.includes(parseUrl.host)) return alert('Marketplace tidak di support');
+        let urls = $('#url').val();
+        if (!urls) return;
+        urls = urls.split('\n');
+        console.log(urls);
+        // return false;
+        // parseUrl = new URL(url);
+        // if (!supportMp.includes(parseUrl.host)) return alert('Marketplace tidak di support');
         $('.btn-mulai').attr('disabled', 'disabled');
         $('.btn-mulai .icon-btn').html('<i class="fas fa-circle-notch fa-spin"></i>');
         $('.btn-mulai .txt').html('Sedang memproses..');
@@ -232,16 +235,19 @@
             return;
         }
 
-        try {
-            if (!isMuliptleProduct) {
-                await fetchSingleProduct();
-                await postProduct();
-            } else {
-                await handleMultipleProduct();
+        for (const url of urls) {
+            try {
+                if (!isMuliptleProduct) {
+                    await fetchSingleProduct(url);
+                    await postProduct();
+                } else {
+                    await handleMultipleProduct(url);
+                }
+            } catch (error) {
+                
             }
-        } catch (error) {
-            
         }
+
         $('.form-scrape')[0].reset()
         $('.btn-mulai').removeAttr('disabled');
         $('.btn-mulai .icon-btn').html('<i class="fas fa-circle-notch fa-plus"></i>');
@@ -249,26 +255,22 @@
         alert('Selesai');
     });
 
-    async function handleMultipleProduct() {
-        let products = await fetchMultipleProduct();
+    async function handleMultipleProduct(url) {
+        let products = await fetchMultipleProduct(url);
         if (!products) return alert('Gagal mengambil list produk');
         i = 1;
         for (const product of products) {
             $('.btn-mulai .txt').html(`Sedang memproses.. ${i} dari ${products.length} item`);
-            parseUrl = new URL(product.api_url);
-            await fetchSingleProduct();
+            // parseUrl = new URL(product.api_url);
+            await fetchSingleProduct(product.api_url);
             await postProduct();
             i++;
         }
     }
 
     function checkIsMultipleProduct() {
-        if (!parseUrl) return;
         let isUrlToko = $('#is-toko').is(":checked");
         return isUrlToko;
-        if (parseUrl.host == 'shopee.co.id') {
-            return parseUrl.href.includes('https://shopee.co.id/shop') ? true : false;
-        }
     }
 
     function isRunInBackground() {
@@ -289,9 +291,9 @@
         console.log(raw);
     }
 
-    async function fetchMultipleProduct() {
+    async function fetchMultipleProduct(url) {
 
-        const raw = await fetch(`${BASE_URL_ADMIN}/scrape-mp/multiple?url=${encodeURIComponent(parseUrl.href)}`, {
+        const raw = await fetch(`${BASE_URL_ADMIN}/scrape-mp/multiple?url=${encodeURIComponent(url)}`, {
             headers: {
                 'accept': 'application/json',
             }
@@ -302,12 +304,12 @@
         
     }
 
-    async function fetchSingleProduct() {
+    async function fetchSingleProduct(url) {
         let persen = $('#persen').val();
         let tambah = $('#tambah').val();
         $('input[name="persen"]').val(persen);
         $('input[name="tambah"]').val(tambah);
-        const raw = await fetch(`${BASE_URL_ADMIN}/scrape-mp/single?url=${encodeURIComponent(parseUrl.href)}&persen=${persen}&tambah=${tambah}`, {
+        const raw = await fetch(`${BASE_URL_ADMIN}/scrape-mp/single?url=${encodeURIComponent(url)}&persen=${persen}&tambah=${tambah}`, {
             headers: {
                 'accept': 'application/json',
             }
@@ -321,7 +323,7 @@
         const data = response.data;
         $('#modalScrape').modal('hide');
         $('#produk').val(data.name);
-        $('#url-sumber').val(parseUrl.href);
+        $('#url-sumber').val(url);
         $('#kategori').val(data.categories[data.categories.length - 1]);
         $('#deskripsi').val(data.description);
         $('#stok').val(data.stock);

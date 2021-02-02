@@ -46,6 +46,7 @@ class CreateProduct implements ShouldQueue
         try {
             $product = (object) ScrapeMarketPlace::product($this->url, $this->persen, $this->tambah);
         } catch (\Throwable $th) {
+            dump($this->url);
             dump($th->getMessage());
             return;
         }
