@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use WebOption;
 
 class Product extends Model
 {
@@ -18,6 +19,13 @@ class Product extends Model
     static public function scopeTerlaris($query)
     {
         $query->orderBy('terjual', 'desc');
+    }
+
+    public function getTitleAttribute($title)
+    {
+        $shortCodeJudul = getOption('shortcode_judul');
+        if (!$shortCodeJudul) return $title;
+        return str_replace(['{%judul%}', '{%harga%}'], [$title, $this->harga], $shortCodeJudul);
     }
 
     public function getHargaAkhirAttribute()

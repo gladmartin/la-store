@@ -116,6 +116,8 @@ class OrderController extends Controller
     {
         $banks = Post::where('type', 'akun_bank')->get();
 
+        // dd($banks);
+
         return view('site.order.konfirmasi-bayar', compact('banks'));
     }
 

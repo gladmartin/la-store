@@ -4,12 +4,16 @@ use App\Http\Controllers\Admin\AccountController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DataTableController;
 use App\Http\Controllers\Admin\DeliveryController;
+use App\Http\Controllers\Admin\LogController;
+use App\Http\Controllers\Admin\OptionController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PostController as AdminPostController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ScrapeMarketPlaceController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\ShortCodeController;
 use App\Http\Controllers\AutoUpdateProductController;
+use App\Http\Controllers\BlackListController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PostController;
@@ -18,6 +22,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\TestController;
+use App\Models\BlackList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -71,6 +76,8 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function () {
         Route::get('/post', [DataTableController::class, 'posts'])->name('dt.post');
         Route::get('/footer', [DataTableController::class, 'footer'])->name('dt.footer');
         Route::get('/bank', [DataTableController::class, 'bank'])->name('dt.bank');
+        Route::get('/blacklist', [DataTableController::class, 'blacklist'])->name('dt.blacklist');
+        Route::get('/log', [DataTableController::class, 'log'])->name('dt.log');
     });
 
     // product
@@ -112,6 +119,19 @@ Route::group(['prefix' => 'app-panel', 'middleware' => ['auth']], function () {
     // posts 
     Route::delete('post/delete-bulk', [AdminPostController::class, 'deleteBulk'])->name('post.delete-bulk');
     Route::resource('/post', AdminPostController::class);
+
+    Route::delete('/blacklist/delete-bulk', [BlackListController::class, 'deleteBulk'])->name('blacklist.delete-bulk');
+    Route::resource('/blacklist', BlackListController::class);
+
+    // shortcode
+    Route::get('shortcode', [ShortCodeController::class, 'index'])->name('shortcode.index');
+
+    // option
+    Route::resource('option', OptionController::class);
+
+    // log
+    Route::get('log/clear', [LogController::class, 'clear'])->name('log.clear');
+    Route::resource('log', LogController::class);
 
     Route::fallback(function () {
         return view('errors.404-app-panel');

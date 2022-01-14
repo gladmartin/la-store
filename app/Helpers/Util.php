@@ -59,9 +59,16 @@ function webOption()
         }
     } catch (\Throwable $th) {
     }
-    
+
     $option = new WebOption($data);
     return $option;
+}
+
+function getOption($key, $default = null)
+{
+    $option = Option::where('name', $key)->first();
+
+    return $option->value ?? $default;
 }
 
 function safeUndefined($var, $default = '')
@@ -73,7 +80,7 @@ function image($src, int $height = null, int $width = null)
 {
     if ($height || $width) {
         $srcSumber = str_replace(['http://', 'https://'], '', $src);
-        $src = "https://i0.wp.com/$srcSumber?resize=$width,$height";       
+        $src = "https://i0.wp.com/$srcSumber?resize=$width,$height";
     }
 
     return $src;
@@ -81,22 +88,23 @@ function image($src, int $height = null, int $width = null)
 
 function footerWidget()
 {
-    return Post::where('type', 'widget_footer')->get();    
+    return Post::where('type', 'widget_footer')->get();
 }
 
 
-function adjustBrightness($hexCode, $adjustPercent) {
+function adjustBrightness($hexCode, $adjustPercent)
+{
     if (strpos($hexCode, '#') === false) return $hexCode;
     $hexCode = ltrim($hexCode, '#');
 
-    
+
     if (strlen($hexCode) == 3) {
         $hexCode = $hexCode[0] . $hexCode[0] . $hexCode[1] . $hexCode[1] . $hexCode[2] . $hexCode[2];
     }
 
     $hexCode = array_map('hexdec', str_split($hexCode, 2));
 
-    foreach ($hexCode as & $color) {
+    foreach ($hexCode as &$color) {
         $adjustableLimit = $adjustPercent < 0 ? $color : 255 - $color;
         $adjustAmount = ceil($adjustableLimit * $adjustPercent);
 
@@ -105,5 +113,3 @@ function adjustBrightness($hexCode, $adjustPercent) {
 
     return '#' . implode($hexCode);
 }
-
-

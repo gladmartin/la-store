@@ -5,6 +5,7 @@ namespace App\Lib\ScrapeMarketPlace\Web;
 use App\Lib\ScrapeMarketPlace\Exception\MarketPlaceException;
 use App\Lib\ScrapeMarketPlace\Exception\TokopediaException;
 use App\Lib\ScrapeMarketPlace\Http\Request;
+use App\Models\BlackList;
 use Illuminate\Support\Str;
 
 class Tokopedia
@@ -16,7 +17,7 @@ class Tokopedia
 
     public function __construct($url)
     {
-        if(substr($url, -1) == '/') {
+        if (substr($url, -1) == '/') {
             $url = substr($url, 0, -1);
         }
         $this->url = $url;
@@ -45,9 +46,9 @@ class Tokopedia
         $request = Request::post(config('lastore.proxy_shared_hoting'), [], $body);
 
         if ($request->failed()) throw new TokopediaException("Gagal mengambil info produk, response body " . $request->body());
-        
+
         $result = json_decode($request->body());
-        
+
         if (!$result->data) throw new TokopediaException('Produk tidak ditemukan, response body ' . $request->body());
 
         // return $result;
@@ -83,12 +84,28 @@ class Tokopedia
         }
         $price = $price + $tambah;
 
+        $description = $result->basic->description ?? 'N/A';
+        $blacklist = BlackList::all()->pluck('blacklist')->toArray();
+        // $description = str_replace($blacklist, '', $description);
+        // $blacklist = ['beli', '0123123'];
+        $descriptionExplode = explode("\n", $description);
+        foreach ($descriptionExplode as $key => $des) {
+            foreach ($blacklist as $word) {
+                if (strpos(strtolower($des), strtolower($word)) !== false) {
+                    unset($descriptionExplode[$key]);
+                }
+            }
+        }
+        $description = implode("\n", $descriptionExplode);
+        
+        $price = round($price, -3);
+
         $returnData = [
             'name' => $result->basic->name,
             'categories' => $categories,
             'thumbnail' => $images[0],
             'images' => $images,
-            'description' => $result->basic->description ?? 'N/A',
+            'description' => $description,
             'stock' => $result->stock->value ?? 1,
             'weight' => $result->basic->weight ?? 100,
             'price' => $price,
@@ -108,15 +125,15 @@ class Tokopedia
         $this->page = (int) preg_replace('/\?.*/', '', $ids[3] ?? 1);
 
         $request = Request::post(config('lastore.proxy_shared_hoting'), [], $this->getGqlShopInfo());
-        
+
         if ($request->failed()) throw new TokopediaException("Gagal mengambil info toko, response body " . $request->body());
-        
+
         $result = json_decode($request->body());
-        
+
         if (!isset($result->data) || !$result->data) throw new TokopediaException('Toko tidak ditemukan, response body ' . $request->body());
-        
+
         $this->shopId = $result->data->shopInfoByID->result[0]->shopCore->shopID;
-        
+
         // get list products
         $request = Request::post(config('lastore.proxy_shared_hoting'), [], $this->getGqlMultipleProduct());
 

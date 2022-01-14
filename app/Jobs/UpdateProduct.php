@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Lib\ScrapeMarketPlace\ScrapeMarketPlace;
+use App\Models\Log;
 use App\Models\Product;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -34,6 +35,11 @@ class UpdateProduct implements ShouldQueue
      */
     public function handle()
     {
+
+        Log::create([
+            'message' => "Update stok dan harga produk dengan judul {$this->product->title} dari url {$this->product->url_sumber}",
+        ]);
+
         $persen = $this->product->metas->where('key', 'persen')->first()->value ?? 0;
         $tambahan = $this->product->metas->where('key', 'tambahan')->first()->value ?? 0;
         try {
@@ -42,7 +48,7 @@ class UpdateProduct implements ShouldQueue
             return;
         }
 
-       $this->product->update([
+        $this->product->update([
             'stok' => $scrape->stock,
             'harga' => $scrape->price,
         ]);

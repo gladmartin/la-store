@@ -54,8 +54,9 @@ class HandleBackgroundScrapeJob implements ShouldQueue
                     CreateProduct::dispatch($url, $this->data->tambah, $this->data->persen, $this->user);
                 }
             } catch (\Throwable $th) {
-                dump($url);
-                dump($th->getMessage());
+                // dump($url);
+                // dump($th->getMessage());
+                // dump('Gagal');
             }
         }
     }

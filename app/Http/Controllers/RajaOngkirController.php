@@ -73,34 +73,20 @@ class RajaOngkirController extends Controller
     public function ongkir(CostOngkir $request)
     {
         $kecamatanToko = Option::where('name', 'subdistrict')->first()->value ?? 1;
-        // sementara pakai punya orang dulu.
-        $raw = Http::get('https://api.pvita.babaturan.net/ongkir', [
-            'dari' => $kecamatanToko,
-            'ke' => $request->ke,
-            'berat' => $request->berat == 0 ? 1 : $request->berat,
-            'kurir' => 'jne,jnt,sicepat',
-        ]);
-        // $raw = Http::post('https://pro.rajaongkir.com/api/cost', [
-        //     'origin' => $kecamatanToko,
-        //     'originType' => 'subdistrict',
-        //     'destination' => $request->ke,
-        //     'destinationType' => 'subdistrict',
-        //     'weight' => $request->berat == 0 ? 1 : $request->berat,
-        //     'courier' => 'jne',
-        //     'key' => config('rajaongkir.api_key')
-        // ]);
-
-        $result = $raw->json();
-        // $result = $raw->json('rajaongkir.results');
-        // dd($result);
-        $ongkir = [];
-        foreach ($result as $res) {
-            if ($res == null) continue;
-            if (empty($res[0]['costs'])) continue;
-            $ongkir[] = $res[0];
-        }
         
-        if (empty($ongkir)) {
+        $raw = Http::post('https://pro.rajaongkir.com/api/cost', [
+            'origin' => $kecamatanToko,
+            'originType' => 'subdistrict',
+            'destination' => $request->ke,
+            'destinationType' => 'subdistrict',
+            'weight' => $request->berat == 0 ? 1 : $request->berat,
+            'courier' => 'jne:jnt:tiki',
+            'key' => config('rajaongkir.api_key')
+        ]);
+
+        $result = $raw->json('rajaongkir.results');
+        
+        if (empty($result)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Ongkir not found',
@@ -109,7 +95,7 @@ class RajaOngkirController extends Controller
 
         return response()->json([
             'success' => true,
-            'results' => $ongkir,
+            'results' => $result,
         ]);
     }
 }

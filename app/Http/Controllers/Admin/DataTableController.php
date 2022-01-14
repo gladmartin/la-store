@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\BlackList;
 use App\Models\Delivery;
+use App\Models\Log;
 use App\Models\Order;
 use App\Models\Post;
 use App\Models\Product;
@@ -197,13 +199,13 @@ class DataTableController extends Controller
                 return '<input type="checkbox" name="delete_bulk" class="row-check" data-id="'. $row->id .'">';
             })
             ->addColumn('bank', function($row) {
-                return $row->metas->where('key', 'bank')->first()->value;
+                return $row->metas->where('key', 'bank')->first()->value ?? '';
             })
             ->addColumn('no_rek', function($row) {
-                return $row->metas->where('key', 'no_rek')->first()->value;
+                return $row->metas->where('key', 'no_rek')->first()->value ?? '';
             })
             ->addColumn('atas_nama', function($row) {
-                return $row->metas->where('key', 'atas_nama')->first()->value;
+                return $row->metas->where('key', 'atas_nama')->first()->value ?? '';
             })
             ->addColumn('aksi', function ($row) {
                 // return $sumber
@@ -214,6 +216,40 @@ class DataTableController extends Controller
             </form>";
             })
             ->rawColumns(['aksi', 'checkbox'])
+            ->make(true);
+    }
+
+    public function blacklist()
+    {
+        $data = BlackList::query();
+
+        return datatables()
+            ->of($data)
+            ->addColumn('checkbox', function($row) {
+                return '<input type="checkbox" name="delete_bulk" class="row-check" data-id="'. $row->id .'">';
+            })
+            ->addColumn('aksi', function ($row) {
+                // return $sumber
+                return "<form action='" . route('blacklist.destroy', $row->id) . "' method='post'>
+                <input type='hidden' name='_token' value=" . csrf_token() . " />
+                <input type='hidden' name='_method' value='delete'/>
+                <button title='Hapus' type='submit' class='btn btn-danger btn-sm btn-delete'><i class='fa fa-trash'></i></button>
+            </form>";
+            })
+            ->rawColumns(['aksi', 'checkbox'])
+            ->make(true);
+    }
+
+    public function log()
+    {
+        $data = Log::query();
+
+        return datatables()
+            ->of($data)
+            ->editColumn('created_at', function($row) {
+                return '<span class="badge badge-dark">'. $row->created_at->format('d M Y h:i:s') . '</span>';
+            })
+            ->rawColumns(['created_at'])
             ->make(true);
     }
 }

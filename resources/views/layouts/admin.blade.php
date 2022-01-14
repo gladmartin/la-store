@@ -108,6 +108,24 @@
                     <span>Akun anda</span></a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('blacklist.index') }}">
+                    <i class="fas fa-fw fa-ban"></i>
+                    <span>Blacklist word</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('shortcode.index') }}">
+                    <i class="fas fa-fw fa-file"></i>
+                    <span>Shortcode</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('log.index') }}">
+                    <i class="fas fa-fw fa-history"></i>
+                    <span>Log Jobs</span></a>
+            </li>
+
             <!-- Divider -->
             {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
 

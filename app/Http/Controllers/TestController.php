@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Lib\Wablas\WablasClient;
+use App\Models\BlackList;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -35,10 +36,27 @@ class TestController extends Controller
 
     public function random()
     {
-        $re = new Request();
-        $re->setMethod('POST');
-        $re->request->add(['foo' => 'bar']);
-        $re->request->add(['ad' => ['sd']]);
-        dd($re->all());
+        $description = 'Harga diatas adalah harga 1 pc
+        Beli 5pc = gratis ongkos
+        Kini tersedia 2 pilihan merek
+        -Tissue see U 250 sheets 
+        -Tissue NICE 180 Sheets
+        Berat 250gram
+        Tissue wajah yang lembut dan higienis sehingga aman digunakan dalam setiap kesempatan dan keperluan sehari - hari 
+        ';
+        $description = '';
+        dump($description);
+        $blacklist = ['beli', '0123123'];
+        $descriptionExplode = explode("\n", $description);
+        foreach ($descriptionExplode as $key => $des) {
+            foreach ($blacklist as $word) {
+                if (strpos(strtolower($des), strtolower($word)) !== false) {
+                    unset($descriptionExplode[$key]);
+                }
+            }
+        }
+        $description = implode("\n", $descriptionExplode);
+
+        dump($description);
     }
 }

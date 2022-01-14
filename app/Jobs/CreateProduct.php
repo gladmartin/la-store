@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Http\Services\ProductService;
 use App\Lib\ScrapeMarketPlace\ScrapeMarketPlace;
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -43,6 +44,9 @@ class CreateProduct implements ShouldQueue
      */
     public function handle()
     {
+        Log::create([
+            'message' => 'Scrape produk dari url (' . $this->url . ')',
+        ]);
         try {
             $product = (object) ScrapeMarketPlace::product($this->url, $this->persen, $this->tambah);
         } catch (\Throwable $th) {

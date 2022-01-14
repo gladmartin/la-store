@@ -5,6 +5,7 @@ namespace App\Lib\ScrapeMarketPlace\Web;
 use App\Lib\ScrapeMarketPlace\Exception\MarketPlaceException;
 use App\Lib\ScrapeMarketPlace\Exception\ShopeeException;
 use App\Lib\ScrapeMarketPlace\Http\Request;
+use App\Models\BlackList;
 
 class Shopee
 {
@@ -27,8 +28,18 @@ class Shopee
             $this->itemId = $ids[count($ids) - 1];
             $urlApi = "https://shopee.co.id/api/v2/item/get?itemid={$this->itemId}&shopid={$this->shopId}";
         }
-
-        $request = Request::get($urlApi);
+        // dd($this->url);
+        $request = Request::get($urlApi, [
+            'Referer' => 'https://shopee.co.id',
+            // 'referer' => $this->url,
+            'x-api-source' => 'pc',
+            'x-requested-with' => 'XMLHttpRequest',
+            'x-shopee-language' => 'id',
+            'accept-language' => 'en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7',
+            'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
+            'accept' => '*/*',
+        ]);
+        
         if ($request->failed()) throw new ShopeeException("Gagal mengambil info produk, response body " . $request->body());
         $result = json_decode($request->body());
         if (!$result->item) throw new ShopeeException('Produk tidak ditemukan, response body ' . $request->body());
@@ -64,12 +75,28 @@ class Shopee
         }
         $price = $price + $tambah;
 
+        $description = $result->description ?? 'N/A';
+        $blacklist = BlackList::all()->pluck('blacklist')->toArray();
+        // $description = str_replace($blacklist, '', $description);
+        // $blacklist = ['beli', '0123123'];
+        $descriptionExplode = explode("\n", $description);
+        foreach ($descriptionExplode as $key => $des) {
+            foreach ($blacklist as $word) {
+                if (strpos(strtolower($des), strtolower($word)) !== false) {
+                    unset($descriptionExplode[$key]);
+                }
+            }
+        }
+        $description = implode("\n", $descriptionExplode);
+
+        $price = round($price, -3);
+
         $returnData = [
             'name' => $result->name,
             'categories' => $categories,
             'thumbnail' => $this->urlFile . $result->image,
             'images' => $images,
-            'description' => $result->description,
+            'description' => $description,
             'stock' => $result->stock,
             'weight' => $result->weight ?? 0,
             'price' => $price,
@@ -88,10 +115,21 @@ class Shopee
         // $urlApi = "https://shopee.co.id/api/v2/search_items/?by=sales&limit=30&match_id={$id}&newest=0&order=desc&page_type=shop&version=2";
         $urlApi = "https://shopee.co.id/api/v2/search_items/?by=pop&entry_point=ShopBySearch&limit=30&match_id={$id}&newest=0&order=desc&page_type=shop&version=2";
 
-        $request = Request::get($urlApi);
+        $request = Request::get($urlApi, [
+            'Referer' => 'https://shopee.co.id',
+            // 'referer' => $this->url,
+            'x-api-source' => 'pc',
+            'x-requested-with' => 'XMLHttpRequest',
+            'x-shopee-language' => 'id',
+            'accept-language' => 'en-US,en;q=0.9,id-ID;q=0.8,id;q=0.7',
+            'user-agent' => 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.93 Safari/537.36',
+            'accept' => '*/*',
+        ]);
         if ($request->failed()) throw new ShopeeException("Gagal mengambil list produk, response body " . $request->body());
         $result = json_decode($request->body());
         if (!$result->items) throw new ShopeeException('Toko tidak ditemukan, response body ' . $request->body());
+
+        // dd($result);
 
         $result = $result->items;
         $products = [];

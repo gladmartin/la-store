@@ -121,13 +121,15 @@
                                             class="form-control @error('bank_tujuan') is-invalid @enderror">
                                             <option disabled selected>Bank tujuan</option>
                                             @foreach ($banks as $item)
+                                            @if ($item->metas->where('key', 'bank')->first() !== null)
                                             @php
-                                                $bank = $item->metas->where('key', 'bank')->first()->value;
-                                                $noRek = $item->metas->where('key', 'no_rek')->first()->value;
-                                                $atasNama = $item->metas->where('key', 'atas_nama')->first()->value;
+                                                $bank = $item->metas->where('key', 'bank')->first()->value ?? '';
+                                                $noRek = $item->metas->where('key', 'no_rek')->first()->value ?? '';
+                                                $atasNama = $item->metas->where('key', 'atas_nama')->first()->value ?? '';
                                                 $rakit = $bank . ' - ' . $noRek . ' a.n ' . $atasNama;
                                             @endphp
                                             <option {{ old('bank_tujuan') == $rakit ? 'selected' : '' }} >{{ $rakit }}</option>
+                                            @endif
                                             @endforeach
                                         </select>
                                         @error('bank_tujuan')
